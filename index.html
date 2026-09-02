@@ -2109,8 +2109,8 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
         return isEvening ? 'evening' : 'day';
       }
 
-      function executePortalImport(studentId) {
-        const scrapedCourses = [
+      function executePortalImport(studentId, customSemesters = null) {
+        const defaultScrapedCourses = [
           { name: 'STRUCTURED PROGRAMMING LANGUAGE', credit: '3', point: '3.25', grade: 'B+' },
           { name: 'STRUCTURED PROGRAMMING LANGUAGE LAB', credit: '1', point: '3.50', grade: 'A-' },
           { name: 'BANGLADESH STUDIES: HISTORY AND CULTURES', credit: '3', point: '3.75', grade: 'A' },
@@ -2123,24 +2123,34 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
         // Auto detect shift (Day vs Evening) from Student ID
         programShift = detectShiftFromStudentId(studentId);
 
-        const batchCredits = scrapedCourses.reduce((sum, c) => sum + (Number(c.credit) || 0), 0);
-        const batchPoints = scrapedCourses.reduce((sum, c) => sum + ((Number(c.credit) || 0) * (Number(c.point) || 0)), 0);
-        const batchGpa = (batchPoints / batchCredits).toFixed(2);
+        const importedBlocks = customSemesters && customSemesters.length 
+          ? customSemesters 
+          : [{ term: '1st Semester', courses: defaultScrapedCourses }];
 
-        const lastSem = semesters[semesters.length - 1];
+        importedBlocks.forEach((block, idx) => {
+          const batchCredits = block.courses.reduce((sum, c) => sum + (Number(c.credit) || 0), 0);
+          const batchPoints = block.courses.reduce((sum, c) => sum + ((Number(c.credit) || 0) * (Number(c.point) || 0)), 0);
+          const batchGpa = batchCredits ? (batchPoints / batchCredits).toFixed(2) : '0.00';
 
-        if (!semesters.length) {
-          semesters.push({ name: '1st Semester', credit: batchCredits.toString(), cgpa: batchGpa, courses: scrapedCourses });
-        } else if (lastSem && lastSem.courses && lastSem.courses.length > 0 && lastSem.courses[0].name.trim() !== '') {
-          // If current semester already has data, auto-append as next semester!
-          const nextSemNum = semesters.length + 1;
-          const semTitle = (nextSemNum === 1) ? '1st Semester' : (nextSemNum === 2) ? '2nd Semester' : (nextSemNum === 3) ? '3rd Semester' : `${nextSemNum}th Semester`;
-          semesters.push({ name: semTitle, credit: batchCredits.toString(), cgpa: batchGpa, courses: scrapedCourses });
-        } else if (lastSem) {
-          lastSem.courses = scrapedCourses;
-          lastSem.credit = batchCredits.toString();
-          lastSem.cgpa = batchGpa;
-        }
+          const targetSemName = block.term || (idx === 0 ? '1st Semester' : `${idx + 1}th Semester`);
+
+          // Overwrite matching semester if it exists (by name or slot), avoiding duplicate entries!
+          const existingIdx = semesters.findIndex(s => s.name.toLowerCase() === targetSemName.toLowerCase() || (idx === 0 && s.name.toLowerCase() === '1st semester'));
+
+          if (existingIdx !== -1) {
+            semesters[existingIdx].name = targetSemName;
+            semesters[existingIdx].courses = block.courses;
+            semesters[existingIdx].credit = batchCredits.toString();
+            semesters[existingIdx].cgpa = batchGpa;
+          } else if (semesters.length > idx) {
+            semesters[idx].name = targetSemName;
+            semesters[idx].courses = block.courses;
+            semesters[idx].credit = batchCredits.toString();
+            semesters[idx].cgpa = batchGpa;
+          } else {
+            semesters.push({ name: targetSemName, credit: batchCredits.toString(), cgpa: batchGpa, courses: block.courses });
+          }
+        });
 
         saveData();
         switchMode('semester');
@@ -2153,7 +2163,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
         if (box) box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
         const shiftText = programShift === 'evening' ? 'Evening Program (10 Semesters)' : 'Day Program (12 Semesters)';
-        showToast(`Successfully imported ${scrapedCourses.length} courses for Student ID: ${studentId}! (${shiftText})`, 'success');
+        showToast(`Synced & updated result data for Student ID: ${studentId}! (${shiftText})`, 'success');
       }
 
       // Portal Login Handler
