@@ -1266,58 +1266,131 @@
         padding: 8px 6px !important;
         white-space: nowrap !important;
       }
+        .sem-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
     }
+    .sem-header-top-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      min-width: 0;
+    }
+    .sem-header-btns-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .add-course-sem-btn {
+      height: 26px;
+      padding: 0 8px;
+      font-size: 9px;
+      font-weight: 700;
+      border-radius: 7px;
+      background: #10B981;
+      border: 1px solid #10B981;
+      color: #ffffff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      white-space: nowrap;
+      box-shadow: 0 2px 6px rgba(16,185,129,.2);
+    }
+    .save-to-overall-btn {
+      height: 26px;
+      padding: 0 8px;
+      font-size: 9px;
+      font-weight: 700;
+      border-radius: 7px;
+      background: var(--primary);
+      border: 1px solid var(--primary);
+      color: #ffffff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      white-space: nowrap;
+      box-shadow: 0 2px 6px rgba(47,78,162,.16);
+    }
+
     @media (max-width: 768px) {
       .main-wrapper {
         padding: 0 8px !important;
       }
       .sem-header-bar {
-        flex-wrap: wrap !important;
+        display: flex !important;
+        flex-direction: column !important;
         gap: 8px !important;
       }
-      .sem-header-bar > div:first-child {
-        width: 100% !important;
-        justify-content: space-between !important;
-      }
-      .sem-header-bar > div:last-child {
-        width: 100% !important;
+      .sem-header-top-row {
         display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+      }
+      .sem-header-btns-row {
+        display: flex !important;
+        width: 100% !important;
         gap: 6px !important;
       }
-      .sem-header-bar > div:last-child button.add-course-sem-btn,
-      .sem-header-bar > div:last-child button.save-to-overall-btn {
+      .sem-header-btns-row .add-course-sem-btn,
+      .sem-header-btns-row .save-to-overall-btn {
         flex: 1 !important;
         height: 32px !important;
+        font-size: 11px !important;
+        font-weight: 700 !important;
+        border-radius: 8px !important;
         justify-content: center !important;
-        font-size: 10.5px !important;
       }
       .data-row {
         display: flex !important;
-        flex-wrap: wrap !important;
+        flex-direction: column !important;
         gap: 6px !important;
-        padding: 8px 10px !important;
+        padding: 10px !important;
+        border-radius: 12px !important;
       }
       .data-row .course-name {
-        flex: 1 1 calc(100% - 40px) !important;
-        width: calc(100% - 40px) !important;
-        height: 38px !important;
-      }
-      .data-row .remove-btn {
-        width: 32px !important;
+        width: 100% !important;
         height: 38px !important;
       }
       .data-row-fields-wrap {
         display: flex !important;
-        width: 100% !important;
+        align-items: center !important;
         gap: 6px !important;
+        width: 100% !important;
       }
-      .data-row-fields-wrap .field-input,
-      .data-row-fields-wrap .field-select {
+      .data-row-fields-wrap .field-credit {
+        width: 46px !important;
+        flex: 0 0 46px !important;
+        height: 36px !important;
+        padding: 0 2px !important;
+        text-align: center !important;
+      }
+      .data-row-fields-wrap .field-point {
+        width: 50px !important;
+        flex: 0 0 50px !important;
+        height: 36px !important;
+        padding: 0 2px !important;
+        text-align: center !important;
+      }
+      .data-row-fields-wrap .field-grade {
         flex: 1 !important;
         height: 36px !important;
-        font-size: 11.5px !important;
-        padding: 0 6px !important;
         min-width: 0 !important;
+        font-size: 11px !important;
+        padding: 0 4px !important;
+      }
+      .data-row-fields-wrap .remove-btn {
+        width: 32px !important;
+        height: 36px !important;
+        flex: 0 0 32px !important;
       }
       .semester-data-row {
         grid-template-columns: 1fr 1fr 34px !important;
@@ -1334,10 +1407,7 @@
       .calc-card {
         padding: 14px 8px !important;
       }
-      .sem-header-bar {
-        gap: 4px;
-      }
-      .sem-title-badge {
+    }    .sem-title-badge {
         font-size: 11px !important;
         padding: 4px 8px !important;
       }
@@ -2220,33 +2290,36 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
           html += `
             <div class="semester-section-block" style="background:#ffffff; border:1px solid var(--border); border-radius:14px; padding:14px 16px; margin-bottom:16px; box-shadow:0 2px 6px rgba(0,0,0,0.02);">
               <!-- Semester Header Bar (Clickable to Collapse/Expand) -->
-              <div class="sem-header-bar" data-toggle-sem="${semIdx}" style="display:flex; align-items:center; justify-content:space-between; gap:8px; cursor:pointer; user-select:none;">
-                <div style="flex:1; min-width:0; display:flex; align-items:center; gap:6px; overflow:hidden;">
-                  <span style="font-size:10px; color:var(--text-muted); font-weight:700; transform:${isCollapsed ? 'rotate(-90deg)' : 'rotate(0deg)'}; transition:transform 0.2s; flex-shrink:0;">
-                    ▼
-                  </span>
-                  <span style="font-size:12px; font-weight:800; color:#ffffff; background:var(--primary); padding:4px 10px; border-radius:8px; white-space:nowrap; flex-shrink:0;">
-                    ${esc(s.name)}
-                  </span>
-                  <span style="font-size:10px; font-weight:700; color:var(--primary-dark); background:var(--primary-light); padding:3px 8px; border-radius:8px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                    ${semCr.toFixed(1)} Cr | GPA: ${semGpa}
-                  </span>
-                </div>
+              <div class="sem-header-bar" data-toggle-sem="${semIdx}">
+                <div class="sem-header-top-row">
+                  <div style="flex:1; min-width:0; display:flex; align-items:center; gap:6px; overflow:hidden;">
+                    <span style="font-size:10px; color:var(--text-muted); font-weight:700; transform:${isCollapsed ? 'rotate(-90deg)' : 'rotate(0deg)'}; transition:transform 0.2s; flex-shrink:0;">
+                      ▼
+                    </span>
+                    <span style="font-size:12px; font-weight:800; color:#ffffff; background:var(--primary); padding:4px 10px; border-radius:8px; white-space:nowrap; flex-shrink:0;">
+                      ${esc(s.name)}
+                    </span>
+                    <span style="font-size:10px; font-weight:700; color:var(--primary-dark); background:var(--primary-light); padding:3px 8px; border-radius:8px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                      ${semCr.toFixed(1)} Cr | GPA: ${semGpa}
+                    </span>
+                  </div>
 
-                <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-                  <button type="button" class="add-course-sem-btn" data-sem-idx="${semIdx}" title="Add a course to ${esc(s.name)}" aria-label="Add course to ${esc(s.name)}" style="height:26px; padding:0 8px; font-size:9px; font-weight:700; border-radius:7px; background:#10B981; border:1px solid #10B981; color:#ffffff; cursor:pointer; display:inline-flex; align-items:center; gap:3px; white-space:nowrap; box-shadow:0 2px 6px rgba(16,185,129,.2);">
-                    <svg class="svg-icon" viewBox="0 0 24 24" style="width:10px;height:10px;color:#ffffff;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                    <span>+ Add Course</span>
-                  </button>
-                  <button type="button" class="save-to-overall-btn" data-sem-idx="${semIdx}" title="Save this semester result to Overall CGPA" aria-label="Save this semester result to Overall CGPA" style="height:26px; padding:0 8px; font-size:9px; font-weight:700; border-radius:7px; background:var(--primary); border:1px solid var(--primary); color:#ffffff; cursor:pointer; display:inline-flex; align-items:center; gap:3px; white-space:nowrap; box-shadow:0 2px 6px rgba(47,78,162,.16);">
-                    <svg class="svg-icon" viewBox="0 0 24 24" style="width:10px;height:10px;color:#ffffff;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path></svg>
-                    <span>Save to Overall</span>
-                  </button>
                   ${semesters.length > 1 ? `
                     <button type="button" class="remove-btn remove-sem-btn" data-sem-idx="${semIdx}" title="Remove Semester" style="width:26px; height:26px;">
                       <svg class="svg-icon" viewBox="0 0 24 24" style="width:13px;height:13px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                     </button>
                   ` : ''}
+                </div>
+
+                <div class="sem-header-btns-row">
+                  <button type="button" class="add-course-sem-btn" data-sem-idx="${semIdx}" title="Add a course to ${esc(s.name)}" aria-label="Add course to ${esc(s.name)}">
+                    <svg class="svg-icon" viewBox="0 0 24 24" style="width:10px;height:10px;color:#ffffff;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    <span>+ Add Course</span>
+                  </button>
+                  <button type="button" class="save-to-overall-btn" data-sem-idx="${semIdx}" title="Save this semester result to Overall CGPA" aria-label="Save this semester result to Overall CGPA">
+                    <svg class="svg-icon" viewBox="0 0 24 24" style="width:10px;height:10px;color:#ffffff;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path></svg>
+                    <span>Save to Overall</span>
+                  </button>
                 </div>
               </div>
 
@@ -2258,16 +2331,15 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
                   <div class="data-row" style="background:${tone.bg}; border-color:${tone.border};">
                     <input class="field-input course-name" data-sem-idx="${semIdx}" data-c-idx="${cIdx}" data-k="name" value="${esc(c.name)}" placeholder="Course Title (e.g. Algorithms)" aria-label="Course title" required>
                     <div class="data-row-fields-wrap">
-                      <input class="field-input" data-sem-idx="${semIdx}" data-c-idx="${cIdx}" data-k="credit" type="number" min="0" step="0.5" value="${esc(c.credit)}" placeholder="Credits" aria-label="Course credits" required>
-                      <input class="field-input" data-sem-idx="${semIdx}" data-c-idx="${cIdx}" data-k="point" type="number" min="0" max="4" step="0.01" value="${esc(c.point)}" placeholder="Point (0-4)" aria-label="Grade point" required>
-                      <select class="field-select" data-sem-idx="${semIdx}" data-c-idx="${cIdx}" data-k="grade" aria-label="Letter grade">${gradeSelectOptionsHtml()}</select>
+                      <input class="field-input field-credit" data-sem-idx="${semIdx}" data-c-idx="${cIdx}" data-k="credit" type="number" min="0" step="0.5" value="${esc(c.credit)}" placeholder="Cr" aria-label="Course credits" required>
+                      <input class="field-input field-point" data-sem-idx="${semIdx}" data-c-idx="${cIdx}" data-k="point" type="number" min="0" max="4" step="0.01" value="${esc(c.point)}" placeholder="Pt" aria-label="Grade point" required>
+                      <select class="field-select field-grade" data-sem-idx="${semIdx}" data-c-idx="${cIdx}" data-k="grade" aria-label="Letter grade">${gradeSelectOptionsHtml()}</select>
+                      <button type="button" class="remove-btn" data-remove-course="${semIdx}-${cIdx}" title="Remove Course" aria-label="Remove course">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                      </button>
                     </div>
-                    <button type="button" class="remove-btn" data-remove-course="${semIdx}-${cIdx}" title="Remove Course" aria-label="Remove course">
-                      <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    </button>
                   </div>
                 `}).join('')}
-
               </div>
             </div>
           `;
