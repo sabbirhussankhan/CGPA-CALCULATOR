@@ -68,33 +68,45 @@
           };
         }
 
-        const response = await fetch(API_BASE + '/api/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'omit',
-          body: JSON.stringify({ studentId: cleanId, password: cleanPass, rememberMe })
-        });
+        const fetchWithRetry = async (retriesLeft = 1) => {
+          try {
+            const response = await fetch(API_BASE + '/api/login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'omit',
+              body: JSON.stringify({ studentId: cleanId, password: cleanPass, rememberMe })
+            });
 
-        const data = await response.json();
-        if (data.success) {
-          const profile = data.profile || { id: cleanId, name: cleanId };
-          this.storeLoginSession({ token: data.token || 'uu_session_active', profile, isDemo: data.isDemo }, rememberMe);
-          window.dispatchEvent(new CustomEvent('uu-auth-changed', { detail: { isLoggedIn: true, profile } }));
-          return { success: true, profile, isDemo: data.isDemo };
-        } else {
-          if (data.message && data.message.includes('Untrusted login origin')) {
-            return {
-              success: false,
-              message: 'Login blocked by server (Untrusted Origin). Open this page via http://localhost (or Live Server) or a web host for live ERP verification.'
-            };
+            const data = await response.json();
+            if (data.success) {
+              const profile = data.profile || { id: cleanId, name: cleanId };
+              this.storeLoginSession({ token: data.token || 'uu_session_active', profile, isDemo: data.isDemo }, rememberMe);
+              window.dispatchEvent(new CustomEvent('uu-auth-changed', { detail: { isLoggedIn: true, profile } }));
+              return { success: true, profile, isDemo: data.isDemo };
+            } else {
+              if (data.message && data.message.includes('Untrusted login origin')) {
+                return {
+                  success: false,
+                  message: 'Login blocked by server (Untrusted Origin). Open this page via http://localhost or a web host for live ERP verification.'
+                };
+              }
+              return { success: false, message: data.message || 'Invalid Student ID or Password' };
+            }
+          } catch (err) {
+            if (retriesLeft > 0) {
+              await new Promise(r => setTimeout(r, 1500));
+              return fetchWithRetry(retriesLeft - 1);
+            }
+            throw err;
           }
-          return { success: false, message: data.message || 'Invalid Student ID or Password' };
-        }
+        };
+
+        return await fetchWithRetry(1);
       } catch (err) {
         console.error('[StudentAuth] Connection error:', err);
         return { 
           success: false, 
-          message: 'Connection Error: Could not connect to Uttara University verification server. Check your network.' 
+          message: 'Connection Error: Verification server is starting up or unreachable. Please try clicking login once more.' 
         };
       }
     },
