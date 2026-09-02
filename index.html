@@ -1269,6 +1269,161 @@
       }
     }
 
+    /* Print Optimized Styling (Enforces 1-Page Print Output & Hides All Non-Print UI) */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 6mm 8mm;
+      }
+      *, *::before, *::after {
+        box-shadow: none !important;
+        text-shadow: none !important;
+      }
+      html, body {
+        background: #FFFFFF !important;
+        color: #000000 !important;
+        font-family: 'Inter', sans-serif !important;
+        font-size: 9.5pt !important;
+        width: 100% !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+      }
+
+      /* Hide All Non-Printable UI Elements */
+      header,
+      footer,
+      nav,
+      .dash-header,
+      .bottom-nav,
+      .hero-banner,
+      .hero-card,
+      .action-btn-group,
+      .btn-add-course,
+      .btn-add-semester,
+      .btn-delete-course,
+      .btn-remove-sem,
+      .btn-primary,
+      .btn-secondary,
+      .btn-danger,
+      .btn-sm,
+      .modal-overlay,
+      .more-dropdown-card,
+      .mobile-sheet-box,
+      .portal-conn-btn,
+      .mode-toggle-group,
+      .shift-toggle-btn,
+      .pro-tip-box,
+      .target-planner,
+      .grading-legend,
+      .auth-alert-box,
+      .modal-close-btn,
+      .delete-btn,
+      .save-to-overall-btn,
+      #btn-sync-overall,
+      #btn-more-dropdown,
+      #bnav-login-btn,
+      .brand-hero-mark {
+        display: none !important;
+      }
+
+      /* Printable Layout Formatting */
+      .app-wrapper {
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+      }
+      .grid-container {
+        display: block !important;
+        gap: 0 !important;
+      }
+      .calc-card {
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+      }
+
+      /* Header Bar for Printed Transcript */
+      .calc-header-bar {
+        border-bottom: 2px solid #0E1B33 !important;
+        padding-bottom: 6px !important;
+        margin-bottom: 10px !important;
+      }
+      .calc-header-bar h2 {
+        font-size: 15pt !important;
+        color: #0E1B33 !important;
+        margin: 0 !important;
+      }
+
+      /* Compact Stats Dashboard for Print */
+      .stats-dashboard {
+        display: flex !important;
+        grid-template-columns: none !important;
+        justify-content: space-between !important;
+        gap: 10px !important;
+        margin-bottom: 10px !important;
+      }
+      .stat-card {
+        border: 1px solid #CBD5E1 !important;
+        background: #F8FAFC !important;
+        padding: 6px 10px !important;
+        border-radius: 6px !important;
+        flex: 1 !important;
+      }
+      .stat-card label {
+        font-size: 8pt !important;
+        color: #475569 !important;
+      }
+      .stat-card .value {
+        font-size: 14pt !important;
+        color: #2451C4 !important;
+      }
+
+      /* Compact Semester Cards & Tables */
+      .semester-card, .sem-card {
+        border: 1px solid #CBD5E1 !important;
+        border-radius: 6px !important;
+        padding: 6px 10px !important;
+        margin-bottom: 8px !important;
+        background: #FFFFFF !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+      .sem-header-bar {
+        margin-bottom: 6px !important;
+        font-size: 9.5pt !important;
+        font-weight: 700 !important;
+      }
+
+      /* Clean Input Fields without Bulky Borders or Controls */
+      .data-row {
+        gap: 4px !important;
+        margin-bottom: 4px !important;
+        padding: 4px 6px !important;
+        border-bottom: 1px solid #F1F5F9 !important;
+      }
+      .field-input, .field-select, input, select {
+        border: none !important;
+        background: transparent !important;
+        color: #000000 !important;
+        padding: 2px 4px !important;
+        font-size: 8.5pt !important;
+        height: 24px !important;
+        box-shadow: none !important;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+      }
+
+      /* Scale Main Container to Ensure 1-Page Fit */
+      .main-container, main {
+        transform: scale(0.94);
+        transform-origin: top center;
+      }
+    }
+
     /* Print Stylesheet for PDF/Printing */
     @media print {
       .navbar, .mode-switch-group, .action-btn-group, .btn-primary, .remove-btn, .tip-box, .grading-legend, .modal-overlay {
