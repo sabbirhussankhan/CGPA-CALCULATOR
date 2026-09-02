@@ -1695,13 +1695,10 @@
           <!-- Clean Course List Section Header -->
           <div class="list-section-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
             <h3 style="margin:0;">Enrolled Courses List</h3>
-            <div class="top-list-actions" style="display:flex; align-items:center; gap:8px;">
-              <button type="button" class="btn-primary" id="top-add-semester-btn" style="padding: 7px 14px; font-size: 12px; font-weight: 700; gap: 6px;">
-                <svg class="svg-icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                <span>+ Add Next Semester</span>
-              </button>
-              <button type="button" class="btn-secondary" id="add-course" style="padding: 7px 14px; font-size: 12px; font-weight: 700;">+ Add Course</button>
-            </div>
+            <button type="button" class="btn-primary" id="top-add-semester-btn" style="padding: 7px 16px; font-size: 12.5px; font-weight: 700; gap: 6px;">
+              <svg class="svg-icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              <span>+ Add Next Semester</span>
+            </button>
           </div>
 
           <div class="rows-container" id="course-list">
@@ -2130,6 +2127,10 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
                 </div>
 
                 <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+                  <button type="button" class="add-course-sem-btn" data-sem-idx="${semIdx}" title="Add a course to ${esc(s.name)}" aria-label="Add course to ${esc(s.name)}" style="height:26px; padding:0 8px; font-size:9px; font-weight:700; border-radius:7px; background:#10B981; border:1px solid #10B981; color:#ffffff; cursor:pointer; display:inline-flex; align-items:center; gap:3px; white-space:nowrap; box-shadow:0 2px 6px rgba(16,185,129,.2);">
+                    <svg class="svg-icon" viewBox="0 0 24 24" style="width:10px;height:10px;color:#ffffff;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    <span>+ Add Course</span>
+                  </button>
                   <button type="button" class="save-to-overall-btn" data-sem-idx="${semIdx}" title="Save this semester result to Overall CGPA" aria-label="Save this semester result to Overall CGPA" style="height:26px; padding:0 8px; font-size:9px; font-weight:700; border-radius:7px; background:var(--primary); border:1px solid var(--primary); color:#ffffff; cursor:pointer; display:inline-flex; align-items:center; gap:3px; white-space:nowrap; box-shadow:0 2px 6px rgba(47,78,162,.16);">
                     <svg class="svg-icon" viewBox="0 0 24 24" style="width:10px;height:10px;color:#ffffff;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path></svg>
                     <span>Save to Overall</span>
@@ -2158,6 +2159,12 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
                   </div>
                 `}).join('')}
 
+                <div style="margin-top:8px; display:flex; justify-content:flex-end;">
+                  <button type="button" class="add-course-sem-btn" data-sem-idx="${semIdx}" title="Add a course to ${esc(s.name)}" aria-label="Add course to ${esc(s.name)}" style="padding:4px 10px; font-size:10.5px; font-weight:700; border-radius:7px; background:#ECFDF5; border:1px solid #A7F3D0; color:#047857; cursor:pointer; display:inline-flex; align-items:center; gap:4px;">
+                    <svg class="svg-icon" viewBox="0 0 24 24" style="width:12px;height:12px;color:#047857;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    <span>+ Add Course</span>
+                  </button>
+                </div>
               </div>
             </div>
           `;
