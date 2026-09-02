@@ -531,6 +531,55 @@
       border-color: #E0483B;
     }
 
+    /* More Dropdown Menu CSS */
+    .more-dropdown-card {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      width: 230px;
+      background: #FFFFFF;
+      border: 1px solid #DCE6F5;
+      border-radius: 16px;
+      box-shadow: 0 12px 36px rgba(20, 40, 90, 0.15);
+      padding: 8px;
+      z-index: 2000;
+      animation: fadeInDown 0.2s ease;
+    }
+    .more-dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: #0E1B33;
+      transition: all 0.2s ease;
+    }
+    .more-dropdown-item:hover {
+      background: #EAF0FC;
+      color: #2451C4;
+    }
+    .more-dropdown-item svg {
+      width: 18px;
+      height: 18px;
+      color: #2451C4;
+      flex-shrink: 0;
+    }
+    .more-dropdown-item .item-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.25;
+      text-align: left;
+    }
+    .more-dropdown-item .item-text strong {
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .more-dropdown-item .item-text small {
+      font-size: 10px;
+      color: #5C6B8A;
+    }
+
     /* Clean Bottom Navigation Bar (Matching Screenshot) */
     .bottom-nav {
       display: none;
@@ -1175,6 +1224,38 @@
           <span>UU Bus</span>
         </a>
 
+        <!-- More Dropdown Navigation Button -->
+        <div class="more-nav-dropdown-wrap" style="position: relative;">
+          <button type="button" class="nav-btn" id="btn-more-dropdown" aria-haspopup="true" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+            <span>More</span>
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: -2px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+
+          <div class="more-dropdown-card" id="more-nav-menu" style="display: none;">
+            <a href="https://uttarauniversity.edu.bd" target="_blank" class="more-dropdown-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+              <div class="item-text">
+                <strong>UU Website</strong>
+                <small>Uttara University portal</small>
+              </div>
+            </a>
+            <a href="../UU_ASSIGNMENT_COVER/index.html" class="more-dropdown-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+              <div class="item-text">
+                <strong>Cover Generator</strong>
+                <small>Assignment cover page tool</small>
+              </div>
+            </a>
+            <a href="../UU_BUS_FRONTEND/dashboard.html" class="more-dropdown-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="1" width="18" height="22" rx="4"></rect><path d="M8 6h8"></path><path d="M6 22v-2"></path><path d="M18 22v-2"></path><path d="M4 18h16"></path></svg>
+              <div class="item-text">
+                <strong>UU Bus Portal</strong>
+                <small>Live tracking & schedules</small>
+              </div>
+            </a>
+          </div>
+        </div>
       </div>
 
       <!-- Profile Avatar Icon Button & Dropdown Menu -->
@@ -2779,6 +2860,24 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
           profileDropdownCard.style.display = 'none';
         }
       });
+
+      // More Navigation Dropdown Toggle Handler
+      const btnMoreDropdown = $('#btn-more-dropdown');
+      const moreNavMenu = $('#more-nav-menu');
+
+      if (btnMoreDropdown && moreNavMenu) {
+        btnMoreDropdown.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isHidden = moreNavMenu.style.display === 'none';
+          moreNavMenu.style.display = isHidden ? 'block' : 'none';
+        });
+
+        document.addEventListener('click', (e) => {
+          if (!moreNavMenu.contains(e.target) && e.target !== btnMoreDropdown && !btnMoreDropdown.contains(e.target)) {
+            moreNavMenu.style.display = 'none';
+          }
+        });
+      }
 
       function showLoginModal() {
         if (!loginModal) return;
