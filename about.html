@@ -652,12 +652,13 @@
     const moreNavMenu = document.getElementById('more-nav-menu');
     if (btnMoreDropdown && moreNavMenu) {
       btnMoreDropdown.addEventListener('click', (e) => {
+        e.preventDefault();
         e.stopPropagation();
-        const isHidden = moreNavMenu.style.display === 'none';
-        moreNavMenu.style.display = isHidden ? 'block' : 'none';
+        const curr = window.getComputedStyle(moreNavMenu).display;
+        moreNavMenu.style.display = (curr === 'none') ? 'block' : 'none';
       });
       document.addEventListener('click', (e) => {
-        if (!moreNavMenu.contains(e.target) && e.target !== btnMoreDropdown && !btnMoreDropdown.contains(e.target)) {
+        if (moreNavMenu && !moreNavMenu.contains(e.target) && e.target !== btnMoreDropdown && !btnMoreDropdown.contains(e.target)) {
           moreNavMenu.style.display = 'none';
         }
       });

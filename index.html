@@ -3019,13 +3019,14 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
 
       if (btnMoreDropdown && moreNavMenu) {
         btnMoreDropdown.addEventListener('click', (e) => {
+          e.preventDefault();
           e.stopPropagation();
-          const isHidden = moreNavMenu.style.display === 'none';
-          moreNavMenu.style.display = isHidden ? 'block' : 'none';
+          const curr = window.getComputedStyle(moreNavMenu).display;
+          moreNavMenu.style.display = (curr === 'none') ? 'block' : 'none';
         });
 
         document.addEventListener('click', (e) => {
-          if (!moreNavMenu.contains(e.target) && e.target !== btnMoreDropdown && !btnMoreDropdown.contains(e.target)) {
+          if (moreNavMenu && !moreNavMenu.contains(e.target) && e.target !== btnMoreDropdown && !btnMoreDropdown.contains(e.target)) {
             moreNavMenu.style.display = 'none';
           }
         });
@@ -3055,11 +3056,13 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
       const bnavLoginBtn = $('#bnav-login-btn');
 
       function showMobileSheet() {
-        if (mobileMoreSheet) mobileMoreSheet.style.display = 'flex';
+        const sheet = document.getElementById('mobile-more-sheet');
+        if (sheet) sheet.style.display = 'flex';
       }
 
       function hideMobileSheet() {
-        if (mobileMoreSheet) mobileMoreSheet.style.display = 'none';
+        const sheet = document.getElementById('mobile-more-sheet');
+        if (sheet) sheet.style.display = 'none';
       }
 
       if (bnavLoginBtn) {
