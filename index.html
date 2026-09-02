@@ -203,6 +203,52 @@
     .modal-close-btn:hover {
       background: var(--bg);
     }
+    /* Custom Toast Notification Styles */
+    #toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+    .custom-toast {
+      pointer-events: auto;
+      min-width: 280px;
+      max-width: 420px;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.15);
+      backdrop-filter: blur(8px);
+      animation: toastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .custom-toast.success {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+    .custom-toast.error {
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+    .custom-toast.info {
+      background: #eef3ff;
+      color: #1e3575;
+      border: 1px solid #c7d2fe;
+    }
+    @keyframes toastSlideIn {
+      from { opacity: 0; transform: translateY(-16px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
     :root {
       --primary: #2F4EA2;
       --primary-dark: #1e3575;
@@ -1917,7 +1963,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
         renderCourses();
 
         nextSemModal.style.display = 'none';
-        alert(`Successfully saved ${pendingAttemptedCredits} Credits & ${pendingGpa} GPA to "${cleanSemName}"! Switched to next semester.`);
+        showToast(`Saved ${pendingAttemptedCredits} Credits & ${pendingGpa} GPA to "${cleanSemName}"!`, 'success');
       });
 
       $('#add-semester').addEventListener('click', () => {
@@ -2105,7 +2151,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
         if (box) box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
         const shiftText = programShift === 'evening' ? 'Evening Program (10 Semesters)' : 'Day Program (12 Semesters)';
-        alert(`Successfully imported ${scrapedCourses.length} courses for Student ID: ${studentId}!\nDetected Shift: ${shiftText}`);
+        showToast(`Successfully imported ${scrapedCourses.length} courses for Student ID: ${studentId}! (${shiftText})`, 'success');
       }
 
       // Portal Login Handler
@@ -2114,11 +2160,11 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
         const password = $('#portal-password').value.trim();
 
         if (!studentId) {
-          alert('Please enter your Student ID!');
+          showToast('Please enter your Student ID!', 'error');
           return;
         }
         if (!password) {
-          alert('Please enter your Portal Password!');
+          showToast('Please enter your Portal Password!', 'error');
           return;
         }
 
@@ -2135,6 +2181,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
               saveData();
               renderPortalSessionUI();
               modal.style.display = 'none';
+              showToast(`Logged in successfully as Student ID: ${activeId}`, 'success');
             } else {
               throw new Error(res.message || 'Student ID or password is incorrect.');
             }
@@ -2145,9 +2192,9 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
           portalSession = null;
           renderPortalSessionUI();
           if (error.message && (error.message.includes('Untrusted login origin') || error.message.includes('file://'))) {
-            alert('Login Verification Note:\n\nDirect file:// access detected. The server requires opening this page via http://localhost (e.g. VS Code Live Server) or a web host for live ERP verification.\n\nYou can use ⚡ 1-Click Instant Demo Login for instant offline testing.');
+            showToast('Direct file:// access detected. Please serve over http://localhost for live ERP verification.', 'error', 6000);
           } else {
-            alert(`Login verification failed: ${error.message}`);
+            showToast(`Login failed: ${error.message}`, 'error', 5000);
           }
         } finally {
           btn.disabled = false;
@@ -2436,6 +2483,34 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
         });
       }
 
+      // Custom Toast Notification System
+      function showToast(message, type = 'success', duration = 4000) {
+        let container = document.getElementById('toast-container');
+        if (!container) {
+          container = document.createElement('div');
+          container.id = 'toast-container';
+          document.body.appendChild(container);
+        }
+
+        const toast = document.createElement('div');
+        toast.className = `custom-toast ${type}`;
+
+        const iconHtml = type === 'success' 
+          ? `<svg class="svg-icon" viewBox="0 0 24 24" style="width:18px;height:18px;color:#10b981;flex-shrink:0;"><polyline points="20 6 9 17 4 12"></polyline></svg>` 
+          : type === 'error'
+          ? `<svg class="svg-icon" viewBox="0 0 24 24" style="width:18px;height:18px;color:#ef4444;flex-shrink:0;"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>`
+          : `<svg class="svg-icon" viewBox="0 0 24 24" style="width:18px;height:18px;color:#3b82f6;flex-shrink:0;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>`;
+
+        toast.innerHTML = `${iconHtml} <span>${esc(message)}</span>`;
+        container.appendChild(toast);
+
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateY(-10px)';
+          setTimeout(() => toast.remove(), 300);
+        }, duration);
+      }
+
       async function handleStudentLogin() {
         const id = inputStudentId ? inputStudentId.value.trim() : '';
         const pass = inputPassword ? inputPassword.value.trim() : '';
@@ -2459,6 +2534,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
         if (result.success) {
           hideLoginModal();
           updateAuthUI();
+          showToast(`Logged in successfully as Student ID: ${id}`, 'success');
         } else {
           authAlertMsg.textContent = result.message || 'Invalid Credentials!';
           authAlertBox.style.display = 'block';
@@ -2478,6 +2554,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
           await StudentAuth.loginDemo();
           hideLoginModal();
           updateAuthUI();
+          showToast('Logged in as Demo Student', 'info');
         });
       }
 
@@ -2485,6 +2562,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
         btnLogout.addEventListener('click', () => {
           if (window.StudentAuth) StudentAuth.logout();
           updateAuthUI();
+          showToast('Logged out successfully', 'info');
         });
       }
 
