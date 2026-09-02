@@ -699,15 +699,15 @@
       gap: 12px;
       margin-bottom: 24px;
     }
+    /* Dynamic Course Data Rows */
     .data-row {
-      display: grid;
-      grid-template-columns: 1.4fr 0.7fr 0.8fr 0.9fr 42px;
-      gap: 10px;
-      align-items: center;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
       background: #f8fafc;
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 12px 14px;
+      padding: 10px 12px;
       transition: all 0.2s ease;
     }
     .data-row:hover {
@@ -715,44 +715,52 @@
       background: #ffffff;
       box-shadow: var(--shadow-sm);
     }
-    .field-input, .field-select {
+    .course-name-wrapper {
       width: 100%;
-      height: 42px;
-      padding: 0 12px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: #ffffff;
-      font-family: inherit;
+    }
+    .course-name-wrapper .course-name {
+      width: 100%;
+      height: 40px;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--text-dark);
-      outline: none;
-      transition: all 0.2s ease;
     }
-    .field-input:focus, .field-select:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(47, 78, 162, 0.15);
-    }
-    .remove-btn {
-      width: 38px;
-      height: 38px;
-      border-radius: 8px;
-      border: 1px solid #fee2e2;
-      background: #fef2f2;
-      color: var(--accent-red);
-      cursor: pointer;
-      display: flex;
+    .course-fields-wrapper {
+      display: grid;
+      grid-template-columns: 0.8fr 0.8fr 1.2fr 38px;
+      gap: 8px;
       align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
+      width: 100%;
     }
-    .remove-btn:hover {
-      background: #fee2e2;
-      color: #dc2626;
+    
+    @media (min-width: 680px) {
+      .data-row {
+        display: grid;
+        grid-template-columns: 1.5fr 0.7fr 0.7fr 1.1fr 38px;
+        gap: 10px;
+        align-items: center;
+      }
+      .course-name-wrapper {
+        display: contents;
+      }
+      .course-fields-wrapper {
+        display: contents;
+      }
     }
 
     .semester-data-row {
-      grid-template-columns: 1.2fr 0.9fr 0.9fr 42px;
+      display: grid;
+      grid-template-columns: 1.4fr 0.9fr 0.9fr 38px;
+      gap: 10px;
+      align-items: center;
+    }
+    @media (max-width: 600px) {
+      .semester-data-row {
+        grid-template-columns: 1fr 1fr 38px;
+      }
+      .semester-data-row .semester-name-select {
+        grid-column: 1 / -1;
+      }
     }
 
     /* Helpful Tip Card */
@@ -865,33 +873,38 @@
       }
     }
     @media (max-width: 600px) {
-      .data-row {
-        grid-template-columns: 1fr 1fr;
-      }
-      .data-row .course-name {
-        grid-column: 1 / -1;
-      }
       .target-grid {
         grid-template-columns: 1fr;
       }
       .hero-banner {
-        padding: 24px 20px;
+        padding: 20px 16px;
+      }
+      .calc-card {
+        padding: 18px 12px;
+      }
+      .sem-header-bar {
+        gap: 8px;
+      }
+      .save-to-overall-btn {
+        margin-left: 0 !important;
       }
       .nav-container {
-        padding: 12px 16px;
-        flex-direction: column;
-        gap: 12px;
-        align-items: stretch;
+        padding: 10px 14px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .nav-brand h1 {
+        font-size: 15px;
+      }
+      .nav-brand p {
+        display: none;
       }
       .nav-links {
-        width: 100%;
-        flex-wrap: wrap;
-        gap: 8px;
-        justify-content: flex-start;
-      }
-      .user-chip {
-        max-width: 100%;
-        flex: 1;
+        width: auto;
+        gap: 6px;
       }
     }
 
@@ -1506,13 +1519,17 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
                   const tone = getCourseTone(c.point, c.grade);
                   return `
                   <div class="data-row" style="background:${tone.bg}; border-color:${tone.border};">
-                    <input class="field-input course-name" data-sem-idx="${semIdx}" data-c-idx="${cIdx}" data-k="name" value="${esc(c.name)}" placeholder="Course Title (e.g. Algorithms)" aria-label="Course title" required>
-                    <input class="field-input" data-sem-idx="${semIdx}" data-c-idx="${cIdx}" data-k="credit" type="number" min="0" step="0.5" value="${esc(c.credit)}" placeholder="Credits" aria-label="Course credits" required>
-                    <input class="field-input" data-sem-idx="${semIdx}" data-c-idx="${cIdx}" data-k="point" type="number" min="0" max="4" step="0.01" value="${esc(c.point)}" placeholder="Point (0-4)" aria-label="Grade point" required>
-                    <select class="field-select" data-sem-idx="${semIdx}" data-c-idx="${cIdx}" data-k="grade" aria-label="Letter grade">${gradeSelectOptionsHtml()}</select>
-                    <button type="button" class="remove-btn" data-remove-course="${semIdx}-${cIdx}" title="Remove Course" aria-label="Remove course">
-                      <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    </button>
+                    <div class="course-name-wrapper">
+                      <input class="field-input course-name" data-sem-idx="${semIdx}" data-c-idx="${cIdx}" data-k="name" value="${esc(c.name)}" placeholder="Course Title (e.g. Algorithms)" aria-label="Course title" required>
+                    </div>
+                    <div class="course-fields-wrapper">
+                      <input class="field-input" data-sem-idx="${semIdx}" data-c-idx="${cIdx}" data-k="credit" type="number" min="0" step="0.5" value="${esc(c.credit)}" placeholder="Credits" aria-label="Course credits" required>
+                      <input class="field-input" data-sem-idx="${semIdx}" data-c-idx="${cIdx}" data-k="point" type="number" min="0" max="4" step="0.01" value="${esc(c.point)}" placeholder="Point (0-4)" aria-label="Grade point" required>
+                      <select class="field-select" data-sem-idx="${semIdx}" data-c-idx="${cIdx}" data-k="grade" aria-label="Letter grade">${gradeSelectOptionsHtml()}</select>
+                      <button type="button" class="remove-btn" data-remove-course="${semIdx}-${cIdx}" title="Remove Course" aria-label="Remove course">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                      </button>
+                    </div>
                   </div>
                 `}).join('')}
 
