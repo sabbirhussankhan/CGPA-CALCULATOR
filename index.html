@@ -535,20 +535,20 @@
     .more-dropdown-card {
       position: absolute;
       top: calc(100% + 8px);
-      left: 0;
-      width: 230px;
+      right: 0;
+      width: 275px;
       background: #FFFFFF;
       border: 1px solid #DCE6F5;
       border-radius: 16px;
-      box-shadow: 0 12px 36px rgba(20, 40, 90, 0.15);
-      padding: 8px;
-      z-index: 2000;
+      box-shadow: 0 14px 40px rgba(20, 40, 90, 0.16);
+      padding: 10px;
+      z-index: 2500;
       animation: fadeInDown 0.2s ease;
     }
     .more-dropdown-item {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       padding: 10px 12px;
       border-radius: 10px;
       text-decoration: none;
@@ -572,12 +572,20 @@
       text-align: left;
     }
     .more-dropdown-item .item-text strong {
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 700;
+      color: #0E1B33;
     }
     .more-dropdown-item .item-text small {
-      font-size: 10px;
+      font-size: 10.5px;
       color: #5C6B8A;
+    }
+
+    /* Hide standalone top avatar button on Desktop mode as requested */
+    @media (min-width: 769px) {
+      .profile-avatar-btn {
+        display: none !important;
+      }
     }
 
     /* Clean Bottom Navigation Bar (Matching Screenshot) */
@@ -1272,25 +1280,61 @@
           </button>
 
           <div class="more-dropdown-card" id="more-nav-menu" style="display: none;">
-            <a href="https://uttarauniversity.edu.bd" target="_blank" class="more-dropdown-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+            <!-- Profile / Login Option Inside Dropdown -->
+            <div id="more-user-profile-section" style="padding: 6px 6px 10px; border-bottom: 1px solid #E2E8F0; margin-bottom: 8px;">
+              <div id="more-user-logged-in" style="display: none; flex-direction: column; gap: 8px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div style="width: 36px; height: 36px; border-radius: 50%; background: #EAF0FC; color: #2451C4; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                  </div>
+                  <div style="display: flex; flex-direction: column; line-height: 1.2; overflow: hidden;">
+                    <strong id="more-dropdown-name" style="font-size: 12.5px; color: #0E1B33; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Student Name</strong>
+                    <span id="more-dropdown-id" style="font-size: 10.5px; font-weight: 700; color: #2451C4;">ID: 2261091211</span>
+                  </div>
+                </div>
+                <button type="button" id="more-btn-logout" class="dropdown-logout-btn" style="margin-top: 4px;">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                  <span>Logout</span>
+                </button>
+              </div>
+              <div id="more-user-logged-out">
+                <button type="button" onclick="showLoginModal();" style="width: 100%; padding: 8px 12px; background: #2451C4; color: #ffffff; border: none; border-radius: 10px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                  <span>Student Login</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- More Dropdown Page Links -->
+            <a href="about.html" class="more-dropdown-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
               <div class="item-text">
-                <strong>UU Website</strong>
-                <small>Uttara University portal</small>
+                <strong>About</strong>
+                <small>About CGPA Calculator</small>
               </div>
             </a>
-            <a href="../UU_ASSIGNMENT_COVER/index.html" class="more-dropdown-item">
+
+            <a href="privacy.html" class="more-dropdown-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <div class="item-text">
+                <strong>Privacy Policy</strong>
+                <small>Data protection & privacy terms</small>
+              </div>
+            </a>
+
+            <a href="terms.html" class="more-dropdown-item">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
               <div class="item-text">
-                <strong>Cover Generator</strong>
-                <small>Assignment cover page tool</small>
+                <strong>Terms & Conditions</strong>
+                <small>Usage terms & guidelines</small>
               </div>
             </a>
-            <a href="../UU_BUS_FRONTEND/dashboard.html" class="more-dropdown-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="1" width="18" height="22" rx="4"></rect><path d="M8 6h8"></path><path d="M6 22v-2"></path><path d="M18 22v-2"></path><path d="M4 18h16"></path></svg>
+
+            <a href="https://sabbirhussankhan.netlify.app" target="_blank" class="more-dropdown-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
               <div class="item-text">
-                <strong>UU Bus Portal</strong>
-                <small>Live tracking & schedules</small>
+                <strong>My Portfolio</strong>
+                <small>Developer profile & projects</small>
               </div>
             </a>
           </div>
@@ -2846,6 +2890,16 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
           if (topAvatarDot) topAvatarDot.style.display = 'block';
           if (btnOpenLogin) btnOpenLogin.style.display = 'none';
 
+          const moreUserLoggedIn = $('#more-user-logged-in');
+          const moreUserLoggedOut = $('#more-user-logged-out');
+          const moreDropdownName = $('#more-dropdown-name');
+          const moreDropdownId = $('#more-dropdown-id');
+
+          if (moreUserLoggedIn) moreUserLoggedIn.style.display = 'flex';
+          if (moreUserLoggedOut) moreUserLoggedOut.style.display = 'none';
+          if (moreDropdownName) moreDropdownName.textContent = studentName;
+          if (moreDropdownId) moreDropdownId.textContent = `ID: ${activeId}`;
+
           const bnavText = $('#bnav-login-text');
           if (bnavText) bnavText.textContent = 'Profile';
 
@@ -2862,6 +2916,11 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
           if (btnOpenLogin) btnOpenLogin.style.display = 'inline-flex';
           portalSession = null;
           saveData();
+
+          const moreUserLoggedIn = $('#more-user-logged-in');
+          const moreUserLoggedOut = $('#more-user-logged-out');
+          if (moreUserLoggedIn) moreUserLoggedIn.style.display = 'none';
+          if (moreUserLoggedOut) moreUserLoggedOut.style.display = 'block';
 
           const bnavText = $('#bnav-login-text');
           if (bnavText) bnavText.textContent = 'Profile';
@@ -2889,6 +2948,16 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
         btnDropdownLogout.addEventListener('click', () => {
           if (window.StudentAuth) StudentAuth.logout();
           if (profileDropdownCard) profileDropdownCard.style.display = 'none';
+          updateAuthUI();
+          showToast('Logged out successfully', 'info');
+        });
+      }
+
+      const moreBtnLogout = $('#more-btn-logout');
+      if (moreBtnLogout) {
+        moreBtnLogout.addEventListener('click', () => {
+          if (window.StudentAuth) StudentAuth.logout();
+          if (moreNavMenu) moreNavMenu.style.display = 'none';
           updateAuthUI();
           showToast('Logged out successfully', 'info');
         });
