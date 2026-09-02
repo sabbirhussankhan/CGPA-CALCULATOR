@@ -603,6 +603,10 @@
       align-items: flex-end !important;
       justify-content: center !important;
       padding: 0 !important;
+      transition: opacity 0.22s ease;
+    }
+    #mobile-more-sheet.closing-overlay {
+      opacity: 0 !important;
     }
     .mobile-sheet-box {
       background: #FFFFFF !important;
@@ -617,9 +621,16 @@
       max-height: calc(85vh - 64px) !important;
       overflow-y: auto !important;
     }
+    .mobile-sheet-box.closing {
+      animation: slideDownSheet 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+    }
     @keyframes slideUpSheet {
-      from { transform: translateY(100%); }
-      to { transform: translateY(0); }
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes slideDownSheet {
+      from { transform: translateY(0); opacity: 1; }
+      to { transform: translateY(100%); opacity: 0; }
     }
     .mobile-sheet-handle {
       width: 40px;
@@ -3077,14 +3088,35 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
         if (inputPassword) inputPassword.value = '';
       }
 
+      let isClosingSheet = false;
+
       function showMobileSheet() {
         const sheet = document.getElementById('mobile-more-sheet');
-        if (sheet) sheet.style.setProperty('display', 'flex', 'important');
+        const box = sheet ? sheet.querySelector('.mobile-sheet-box') : null;
+        if (sheet) {
+          isClosingSheet = false;
+          if (box) box.classList.remove('closing');
+          sheet.classList.remove('closing-overlay');
+          sheet.style.setProperty('display', 'flex', 'important');
+        }
       }
 
       function hideMobileSheet() {
         const sheet = document.getElementById('mobile-more-sheet');
-        if (sheet) sheet.style.setProperty('display', 'none', 'important');
+        const box = sheet ? sheet.querySelector('.mobile-sheet-box') : null;
+        if (!sheet || isClosingSheet) return;
+        if (sheet.style.display === 'none') return;
+
+        isClosingSheet = true;
+        if (box) box.classList.add('closing');
+        sheet.classList.add('closing-overlay');
+
+        setTimeout(() => {
+          sheet.style.setProperty('display', 'none', 'important');
+          if (box) box.classList.remove('closing');
+          sheet.classList.remove('closing-overlay');
+          isClosingSheet = false;
+        }, 220);
       }
 
       const mobileMoreSheet = $('#mobile-more-sheet');
