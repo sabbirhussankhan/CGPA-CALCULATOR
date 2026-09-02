@@ -3274,6 +3274,21 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
         }, 220);
       }
 
+      function toggleMobileSheet() {
+        const sheet = document.getElementById('mobile-more-sheet');
+        if (!sheet) return;
+        const currentDisplay = window.getComputedStyle(sheet).display;
+        if (currentDisplay === 'none' || sheet.style.display === 'none' || sheet.classList.contains('closing-overlay')) {
+          showMobileSheet();
+        } else {
+          hideMobileSheet();
+        }
+      }
+
+      window.showMobileSheet = showMobileSheet;
+      window.hideMobileSheet = hideMobileSheet;
+      window.toggleMobileSheet = toggleMobileSheet;
+
       const mobileMoreSheet = $('#mobile-more-sheet');
       const btnCloseMobileSheet = $('#btn-close-mobile-sheet');
       const bnavLoginBtn = $('#bnav-login-btn');
@@ -3282,7 +3297,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
         bnavLoginBtn.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation();
-          showMobileSheet();
+          toggleMobileSheet();
         });
       }
 
@@ -3537,7 +3552,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
       <span>Cover Page</span>
     </a>
-    <a href="#" class="bnav-item" id="bnav-login-btn" onclick="if(window.showMobileSheet) showMobileSheet(); return false;">
+    <a href="#" class="bnav-item" id="bnav-login-btn" onclick="if(window.toggleMobileSheet) toggleMobileSheet(); else if(window.showMobileSheet) showMobileSheet(); return false;">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6" rx="1"></rect><rect x="14" y="4" width="6" height="6" rx="1"></rect><rect x="4" y="14" width="6" height="6" rx="1"></rect><rect x="14" y="14" width="6" height="6" rx="1"></rect></svg>
       <span id="bnav-login-text">More</span>
     </a>
