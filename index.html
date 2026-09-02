@@ -590,15 +590,17 @@
 
     /* Mobile Bottom Sheet Drawer for More Options */
     #mobile-more-sheet {
-      position: fixed !important;
-      inset: 0 !important;
-      background: rgba(15, 23, 42, 0.55) !important;
-      backdrop-filter: blur(4px) !important;
-      z-index: 999999 !important;
-      display: flex !important;
-      align-items: flex-end !important;
-      justify-content: center !important;
-      padding: 0 0 64px 0 !important;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 64px;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(4px);
+      z-index: 99995;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 0;
     }
     .mobile-sheet-box {
       background: #FFFFFF !important;
@@ -639,7 +641,7 @@
         background: #FFFFFF !important; 
         border-top: 1px solid #E2E8F0 !important;
         box-shadow: 0 -4px 20px rgba(14, 27, 51, 0.08) !important;
-        z-index: 99990 !important;
+        z-index: 999999 !important;
         align-items: center !important;
         justify-content: space-around !important;
         padding: 4px 8px calc(4px + env(safe-area-inset-bottom, 0px)) !important;
@@ -3074,12 +3076,12 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
 
       function showMobileSheet() {
         const sheet = document.getElementById('mobile-more-sheet');
-        if (sheet) sheet.style.display = 'flex';
+        if (sheet) sheet.style.setProperty('display', 'flex', 'important');
       }
 
       function hideMobileSheet() {
         const sheet = document.getElementById('mobile-more-sheet');
-        if (sheet) sheet.style.display = 'none';
+        if (sheet) sheet.style.setProperty('display', 'none', 'important');
       }
 
       const mobileMoreSheet = $('#mobile-more-sheet');
@@ -3268,7 +3270,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
       <div class="mobile-sheet-handle"></div>
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid #E2E8F0; padding-bottom: 10px;">
         <h3 style="font-size: 16px; font-weight: 800; color: #0E1B33;">More Options</h3>
-        <button type="button" id="btn-close-mobile-sheet" onclick="hideMobileSheet(); return false;" class="modal-close-btn" aria-label="Close Options" style="border: none; background: #F1F5F9; width: 30px; height: 30px; border-radius: 50%; font-size: 18px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #5C6B8A;">&times;</button>
+        <button type="button" id="btn-close-mobile-sheet" onclick="hideMobileSheet(); return false;" class="modal-close-btn" aria-label="Close Options" style="border: none; background: #F1F5F9; width: 32px; height: 32px; border-radius: 50%; font-size: 20px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #475569; z-index: 100;">&times;</button>
       </div>
 
       <!-- Profile / Login Option inside Mobile Sheet -->
