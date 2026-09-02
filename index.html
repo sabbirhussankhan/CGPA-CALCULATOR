@@ -2282,7 +2282,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
         [...semesters]
           .map((s, semIdx) => ({ s, semIdx }))
           .sort((a, b) => semesterNumber(b.s.name) - semesterNumber(a.s.name))
-          .map(({ s, semIdx }) => {
+          .map(({ s, semIdx }, orderIdx) => {
           const semCourses = s.courses || [];
 
           let semCr = 0;
@@ -2305,7 +2305,12 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
           s.credit = semCr.toString();
           s.cgpa = semGpa;
 
-          const isCollapsed = collapsedSemesters[semIdx] === true;
+          // Default accordion state: only the first (latest) semester (orderIdx === 0) is expanded by default.
+          // All other semesters (orderIdx > 0) are collapsed by default unless explicitly toggled by user.
+          let isCollapsed = orderIdx > 0;
+          if (collapsedSemesters[semIdx] !== undefined) {
+            isCollapsed = collapsedSemesters[semIdx] === true;
+          }
 
           html += `
             <div class="semester-section-block" style="background:#ffffff; border:1px solid var(--border); border-radius:14px; padding:14px 16px; margin-bottom:16px; box-shadow:0 2px 6px rgba(0,0,0,0.02);">
@@ -2396,11 +2401,18 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
           bar.addEventListener('click', (e) => {
             if (e.target.closest('button') || e.target.closest('input') || e.target.closest('select')) return;
             const sIdx = +bar.dataset.toggleSem;
-            const willExpand = collapsedSemesters[sIdx] === true;
+
+            let currentlyCollapsed = collapsedSemesters[sIdx];
+            if (currentlyCollapsed === undefined) {
+              const sorted = [...semesters]
+                .map((s, idx) => ({ s, idx }))
+                .sort((a, b) => semesterNumber(b.s.name) - semesterNumber(a.s.name));
+              const orderIdx = sorted.findIndex(item => item.idx === sIdx);
+              currentlyCollapsed = orderIdx > 0;
+            }
+
+            collapsedSemesters[sIdx] = !currentlyCollapsed;
             currentSemIdx = sIdx;
-            // Opening one semester must not close the others. The last clicked
-            // expanded semester is only the active target for Add Course.
-            collapsedSemesters[sIdx] = !willExpand;
             renderCourses();
           });
         });
