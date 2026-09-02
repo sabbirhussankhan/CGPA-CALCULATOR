@@ -613,12 +613,12 @@
       border-radius: 24px 24px 0 0 !important;
       width: 100% !important;
       max-width: 520px !important;
-      padding: 14px 20px 24px !important;
-      margin-bottom: 64px !important;
+      padding: 14px 20px 32px !important;
+      margin-bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
       box-shadow: 0 -12px 40px rgba(14, 27, 51, 0.25) !important;
       animation: slideUpSheet 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
       position: relative !important;
-      max-height: calc(85vh - 64px) !important;
+      max-height: calc(80vh - 72px) !important;
       overflow-y: auto !important;
     }
     .mobile-sheet-box.closing {
