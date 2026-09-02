@@ -612,6 +612,14 @@
       display: none;
     }
     @media (max-width: 768px) {
+      #mobile-more-sheet {
+        align-items: flex-end !important;
+        padding-bottom: 74px !important;
+      }
+      .mobile-sheet-box {
+        border-radius: 20px !important;
+        box-shadow: 0 -12px 40px rgba(14, 27, 51, 0.25) !important;
+      }
       .bottom-nav {
         display: flex !important;
         position: fixed !important;
@@ -2967,9 +2975,13 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
       if (topAvatarBtn) {
         topAvatarBtn.addEventListener('click', (e) => {
           e.stopPropagation();
+          if (window.innerWidth <= 768) {
+            showMobileSheet();
+            return;
+          }
           if (window.StudentAuth && StudentAuth.isLoggedIn()) {
             if (profileDropdownCard) {
-              const isHidden = profileDropdownCard.style.display === 'none';
+              const isHidden = window.getComputedStyle(profileDropdownCard).display === 'none';
               profileDropdownCard.style.display = isHidden ? 'block' : 'none';
             }
           } else {
