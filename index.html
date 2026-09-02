@@ -1397,10 +1397,40 @@
         flex: 0 0 34px !important;
       }
       .semester-data-row {
-        grid-template-columns: 1fr 1fr 34px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 6px !important;
+        padding: 10px !important;
+        border-radius: 12px !important;
+        margin-bottom: 12px !important;
       }
-      .semester-data-row .semester-name-select {
-        grid-column: 1 / -1;
+      .semester-name-wrap {
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        width: 100% !important;
+      }
+      .semester-name-select {
+        flex: 1 !important;
+        height: 38px !important;
+      }
+      .semester-fields-wrap {
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        width: 100% !important;
+      }
+      .semester-fields-wrap .field-input {
+        flex: 1 !important;
+        height: 36px !important;
+        font-size: 11.5px !important;
+        padding: 0 8px !important;
+        min-width: 0 !important;
+      }
+      .semester-data-row .remove-btn {
+        width: 34px !important;
+        height: 38px !important;
+        flex: 0 0 34px !important;
       }
       .target-grid {
         grid-template-columns: 1fr;
@@ -2611,15 +2641,19 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
 
         const box = $('#semester-list');
         box.innerHTML = semesters.map((s, i) => `
-          <div class="data-row semester-data-row">
-            <select class="field-select semester-name-select" data-i="${i}" data-k="name" aria-label="Semester title">
-              ${semesterSelectOptionsHtml(s.name)}
-            </select>
-            <input class="field-input" data-i="${i}" data-k="credit" type="number" min="0" step="0.5" value="${esc(s.credit)}" placeholder="Completed Credits" aria-label="Completed credits" required>
-            <input class="field-input" data-i="${i}" data-k="cgpa" type="number" min="0" max="4" step="0.01" value="${esc(s.cgpa)}" placeholder="Semester CGPA" aria-label="Semester CGPA" required>
-            <button type="button" class="remove-btn" data-remove-semester="${i}" title="Remove Semester" aria-label="Remove semester">
-              <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </button>
+          <div class="data-row semester-data-row" style="margin-bottom:12px;">
+            <div class="semester-name-wrap" style="display:flex; align-items:center; gap:6px; width:100%;">
+              <select class="field-select semester-name-select" data-i="${i}" data-k="name" aria-label="Semester title" style="flex:1;">
+                ${semesterSelectOptionsHtml(s.name)}
+              </select>
+              <button type="button" class="remove-btn" data-remove-semester="${i}" title="Remove Semester" aria-label="Remove semester">
+                <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              </button>
+            </div>
+            <div class="semester-fields-wrap" style="display:flex; align-items:center; gap:6px; width:100%;">
+              <input class="field-input" data-i="${i}" data-k="credit" type="number" min="0" step="0.5" value="${esc(s.credit)}" placeholder="Completed Credits" aria-label="Completed credits" required style="flex:1;">
+              <input class="field-input" data-i="${i}" data-k="cgpa" type="number" min="0" max="4" step="0.01" value="${esc(s.cgpa)}" placeholder="Semester CGPA" aria-label="Semester CGPA" required style="flex:1;">
+            </div>
           </div>
         `).join('');
 
