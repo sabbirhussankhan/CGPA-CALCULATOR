@@ -430,11 +430,105 @@
       cursor: pointer;
       transition: all 0.2s ease;
       box-shadow: 0 2px 6px rgba(36, 81, 196, 0.12);
+      position: relative;
     }
     .profile-avatar-btn:hover {
       background: #2451C4;
       color: #ffffff;
       transform: scale(1.05);
+    }
+    .avatar-active-dot {
+      position: absolute;
+      top: 1px;
+      right: 1px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #15A567;
+      border: 2px solid #ffffff;
+    }
+    .profile-dropdown-card {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      width: 250px;
+      background: #FFFFFF;
+      border: 1px solid #DCE6F5;
+      border-radius: 16px;
+      box-shadow: 0 12px 36px rgba(20, 40, 90, 0.15);
+      padding: 14px;
+      z-index: 2000;
+      animation: fadeInDown 0.2s ease;
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .dropdown-user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .dropdown-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #EAF0FC;
+      color: #2451C4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .dropdown-user-details {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .dropdown-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0E1B33;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .dropdown-id {
+      font-size: 11px;
+      font-weight: 600;
+      color: #2451C4;
+    }
+    .dropdown-program {
+      font-size: 10px;
+      color: #5C6B8A;
+      margin-top: 2px;
+      line-height: 1.2;
+    }
+    .dropdown-divider {
+      height: 1px;
+      background: #E2E8F0;
+      margin: 12px 0 10px;
+    }
+    .dropdown-logout-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 9px;
+      background: #FCEAE8;
+      color: #E0483B;
+      border: 1px solid #FCD9D6;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .dropdown-logout-btn:hover {
+      background: #E0483B;
+      color: #FFFFFF;
+      border-color: #E0483B;
     }
 
     /* Clean Bottom Navigation Bar (Matching Screenshot) */
@@ -1081,31 +1175,39 @@
           <span>UU Website</span>
         </a>
 
-        <!-- Student Auth Navigation -->
+        <!-- Student Auth Navigation Button (Shown when Logged Out) -->
         <button type="button" class="nav-btn primary-auth-btn" id="btn-open-login" style="background:#2451C4; color:#ffffff; font-weight:700; border-radius:20px;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
           <span>Student Login</span>
         </button>
+      </div>
 
-        <div id="user-profile-bar" style="display: none; align-items: center; gap: 8px;">
-          <div class="user-chip" style="border-radius:20px;">
-            <svg class="svg-icon" viewBox="0 0 24 24" style="color:#2451C4;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <div style="display:flex; flex-direction:column; line-height:1.2; text-align:left;">
-              <span id="user-chip-name" style="font-size:12px; font-weight:700; color:#15306B;">Student</span>
-              <span id="user-chip-id" style="font-size:10px; color:#5C6B8A;">ID</span>
+      <!-- Profile Avatar Icon Button & Dropdown Menu -->
+      <div style="position: relative;">
+        <button class="profile-avatar-btn" id="top-avatar-btn" title="Profile / Student Login" aria-label="Profile / Student Login">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span class="avatar-active-dot" id="top-avatar-dot" style="display:none;"></span>
+        </button>
+
+        <!-- Dropdown Menu when Logged In -->
+        <div class="profile-dropdown-card" id="header-profile-dropdown" style="display: none;">
+          <div class="dropdown-user-info">
+            <div class="dropdown-avatar">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </div>
+            <div class="dropdown-user-details">
+              <span class="dropdown-name" id="dropdown-user-name">SABBIR HUSSAN KHAN</span>
+              <span class="dropdown-id" id="dropdown-user-id">ID: 2261091211</span>
+              <span class="dropdown-program" id="dropdown-user-program">BSc in Computer Science & Engineering</span>
             </div>
           </div>
-          <button type="button" class="nav-btn btn-logout" id="btn-logout" title="Logout" style="padding:6px 12px; color:#E0483B; border-radius:20px;">
-            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+          <div class="dropdown-divider"></div>
+          <button type="button" class="dropdown-logout-btn" id="btn-dropdown-logout">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
             <span>Logout</span>
           </button>
         </div>
       </div>
-
-      <!-- Profile Avatar Icon Button (Top Right Header) -->
-      <button class="profile-avatar-btn" id="top-avatar-btn" title="Profile / Student Login" aria-label="Profile / Student Login" onclick="if(window.showLoginModal) showLoginModal();">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-      </button>
     </div>
   </header>
 
@@ -2602,9 +2704,13 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
       const inputPassword = $('#auth-password');
       const inputRememberMe = $('#auth-remember-me');
       const btnTogglePw = $('#btn-toggle-pw');
-      const userProfileBar = $('#user-profile-bar');
-      const userChipName = $('#user-chip-name');
-      const userChipId = $('#user-chip-id');
+      const topAvatarBtn = $('#top-avatar-btn');
+      const topAvatarDot = $('#top-avatar-dot');
+      const profileDropdownCard = $('#header-profile-dropdown');
+      const dropdownUserName = $('#dropdown-user-name');
+      const dropdownUserId = $('#dropdown-user-id');
+      const dropdownUserProgram = $('#dropdown-user-program');
+      const btnDropdownLogout = $('#btn-dropdown-logout');
 
       function updateAuthUI() {
         if (window.StudentAuth && StudentAuth.isLoggedIn()) {
@@ -2619,10 +2725,11 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
             programShift = 'evening';
           }
 
-          userChipName.textContent = studentName;
-          userChipId.textContent = `ID: ${activeId}`;
-          userProfileBar.style.display = 'flex';
-          btnOpenLogin.style.display = 'none';
+          if (dropdownUserName) dropdownUserName.textContent = studentName;
+          if (dropdownUserId) dropdownUserId.textContent = `ID: ${activeId}`;
+          if (dropdownUserProgram) dropdownUserProgram.textContent = programName;
+          if (topAvatarDot) topAvatarDot.style.display = 'block';
+          if (btnOpenLogin) btnOpenLogin.style.display = 'none';
 
           const bnavText = $('#bnav-login-text');
           if (bnavText) bnavText.textContent = 'Profile';
@@ -2635,8 +2742,9 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
             renderPortalSessionUI();
           }
         } else {
-          userProfileBar.style.display = 'none';
-          btnOpenLogin.style.display = 'inline-flex';
+          if (topAvatarDot) topAvatarDot.style.display = 'none';
+          if (profileDropdownCard) profileDropdownCard.style.display = 'none';
+          if (btnOpenLogin) btnOpenLogin.style.display = 'inline-flex';
           portalSession = null;
           saveData();
 
@@ -2647,6 +2755,35 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
           }
         }
       }
+
+      if (topAvatarBtn) {
+        topAvatarBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (window.StudentAuth && StudentAuth.isLoggedIn()) {
+            if (profileDropdownCard) {
+              const isHidden = profileDropdownCard.style.display === 'none';
+              profileDropdownCard.style.display = isHidden ? 'block' : 'none';
+            }
+          } else {
+            showLoginModal();
+          }
+        });
+      }
+
+      if (btnDropdownLogout) {
+        btnDropdownLogout.addEventListener('click', () => {
+          if (window.StudentAuth) StudentAuth.logout();
+          if (profileDropdownCard) profileDropdownCard.style.display = 'none';
+          updateAuthUI();
+          showToast('Logged out successfully', 'info');
+        });
+      }
+
+      document.addEventListener('click', (e) => {
+        if (profileDropdownCard && !profileDropdownCard.contains(e.target) && e.target !== topAvatarBtn && !topAvatarBtn.contains(e.target)) {
+          profileDropdownCard.style.display = 'none';
+        }
+      });
 
       function showLoginModal() {
         if (!loginModal) return;
