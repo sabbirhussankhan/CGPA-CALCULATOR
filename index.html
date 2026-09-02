@@ -1092,7 +1092,7 @@
       height: 100vh;
       background: rgba(15, 23, 42, 0.5);
       backdrop-filter: blur(4px);
-      z-index: 1000;
+      z-index: 999999 !important;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -3052,6 +3052,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
 
       const mobileMoreSheet = $('#mobile-more-sheet');
       const btnCloseMobileSheet = $('#btn-close-mobile-sheet');
+      const bnavLoginBtn = $('#bnav-login-btn');
 
       function showMobileSheet() {
         if (mobileMoreSheet) mobileMoreSheet.style.display = 'flex';
@@ -3059,6 +3060,14 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
 
       function hideMobileSheet() {
         if (mobileMoreSheet) mobileMoreSheet.style.display = 'none';
+      }
+
+      if (bnavLoginBtn) {
+        bnavLoginBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          showMobileSheet();
+        });
       }
 
       if (btnCloseMobileSheet) btnCloseMobileSheet.addEventListener('click', hideMobileSheet);
