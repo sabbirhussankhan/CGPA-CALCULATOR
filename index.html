@@ -2001,10 +2001,8 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
           btn.textContent = 'Syncing Results...';
         }
         try {
-          // Authentication is live. The result-page endpoint will be wired here
-          // separately once its ERP URL/markup is identified.
           await new Promise(resolve => setTimeout(resolve, 250));
-          alert(`Portal login is verified for ${studentId}. Result page sync is ready for the next integration step.`);
+          executePortalImport(studentId);
         } finally {
           if (btn) {
             btn.disabled = false;
@@ -2137,7 +2135,6 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
               saveData();
               renderPortalSessionUI();
               modal.style.display = 'none';
-              alert(`Login verified successfully for Student ID: ${activeId}.`);
             } else {
               throw new Error(res.message || 'Student ID or password is incorrect.');
             }
@@ -2161,7 +2158,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
       // Session 1-Click Import Handler with Loading Feedback
       $('#session-fetch-btn')?.addEventListener('click', () => {
         if (portalSession && portalSession.studentId) {
-          alert('Login is verified. Result page import will be connected in the next step.');
+          executePortalImport(portalSession.studentId);
         }
       });
 
@@ -2169,9 +2166,9 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
       const logoutHandler = () => {
         portalSession = null;
         sessionStorage.removeItem('uu_cgpa_portal_token');
+        if (window.StudentAuth) StudentAuth.logout();
         saveData();
         renderPortalSessionUI();
-        alert('Logged out from MY UU Portal session.');
       };
 
       $('#session-logout-btn')?.addEventListener('click', logoutHandler);
