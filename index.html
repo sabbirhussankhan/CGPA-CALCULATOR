@@ -2159,26 +2159,12 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
                   </div>
                 `}).join('')}
 
-                <div style="margin-top:8px; display:flex; justify-content:flex-end;">
-                  <button type="button" class="add-course-sem-btn" data-sem-idx="${semIdx}" title="Add a course to ${esc(s.name)}" aria-label="Add course to ${esc(s.name)}" style="padding:4px 10px; font-size:10.5px; font-weight:700; border-radius:7px; background:#ECFDF5; border:1px solid #A7F3D0; color:#047857; cursor:pointer; display:inline-flex; align-items:center; gap:4px;">
-                    <svg class="svg-icon" viewBox="0 0 24 24" style="width:12px;height:12px;color:#047857;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                    <span>+ Add Course</span>
-                  </button>
-                </div>
               </div>
             </div>
           `;
         }).join('');
 
-        // Add Next Semester Action Bar at bottom
-        html += `
-          <div style="margin-top:18px; margin-bottom:10px; display:flex; justify-content:center;">
-            <button type="button" class="btn-primary" id="append-next-semester-btn" style="padding:10px 22px; font-size:12px; font-weight:700; gap:6px;">
-              <svg class="svg-icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-              <span>+ Add Next Semester</span>
-            </button>
-          </div>
-        `;
+
 
         box.innerHTML = html;
 
