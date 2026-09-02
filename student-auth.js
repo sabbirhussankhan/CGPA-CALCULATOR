@@ -112,7 +112,12 @@
     },
 
     async loginDemo() {
-      const demoProfile = { id: '2261091001', name: 'Demo Student', department: 'CSE' };
+      const demoProfile = { 
+        id: '2261091211', 
+        name: 'SABBIR HUSSAN KHAN', 
+        department: 'Department of Computer Science and Engineering',
+        program: 'BSc in Computer Science & Engineering (For Diploma Holder)'
+      };
       this.storeLoginSession({ token: 'demo_session_token', profile: demoProfile, isDemo: true }, false);
       window.dispatchEvent(new CustomEvent('uu-auth-changed', { detail: { isLoggedIn: true, profile: demoProfile } }));
       return { success: true, profile: demoProfile, isDemo: true };

@@ -2022,8 +2022,10 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
           if (sessionBox) sessionBox.style.display = 'block';
           if (displayId) displayId.textContent = portalSession.studentId;
           
+          const programName = portalSession.program || 'BSc in Computer Science & Engineering (For Diploma Holder)';
+
           if (mainSessionBadge) mainSessionBadge.style.display = 'block';
-          if (mainSessionId) mainSessionId.textContent = portalSession.studentId;
+          if (mainSessionId) mainSessionId.innerHTML = `${portalSession.studentId} <span style="font-weight:600; color:#059669;">(${programName})</span>`;
           if (syncBtnLabel) syncBtnLabel.textContent = `Sync (${portalSession.studentId})`;
         } else {
           if (formBox) formBox.style.display = 'block';
@@ -2420,15 +2422,25 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
       function updateAuthUI() {
         if (window.StudentAuth && StudentAuth.isLoggedIn()) {
           const profile = StudentAuth.getProfile() || {};
-          userChipName.textContent = profile.name || profile.id || 'Student';
-          userChipId.textContent = profile.id ? `ID: ${profile.id}` : 'UU Student';
+          const activeId = profile.id || '2261091211';
+          const studentName = profile.name || 'SABBIR HUSSAN KHAN';
+          const programName = profile.program || 'BSc in Computer Science & Engineering (For Diploma Holder)';
+          
+          // Auto-set Evening / Diploma program shift mode (Default 10 Semesters)
+          const isDiplomaOrEvening = /diploma|evening/i.test(programName || profile.department || activeId) || /^\d{3}[357]/.test(activeId);
+          if (isDiplomaOrEvening) {
+            programShift = 'evening';
+          }
+
+          userChipName.textContent = studentName;
+          userChipId.innerHTML = `ID: ${activeId} &bull; <span style="color:var(--primary); font-weight:700;">${programName}</span>`;
           userProfileBar.style.display = 'flex';
           btnOpenLogin.style.display = 'none';
 
           // Sync portalSession state immediately so Sync (ID) & Portal Connected badge update instantly!
-          const activeId = profile.id || '2261091211';
-          portalSession = { loggedIn: true, verified: true, studentId: activeId };
+          portalSession = { loggedIn: true, verified: true, studentId: activeId, program: programName, shift: isDiplomaOrEvening ? 'evening' : 'day' };
           saveData();
+          renderSemesters();
           if (typeof renderPortalSessionUI === 'function') {
             renderPortalSessionUI();
           }
