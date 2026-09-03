@@ -963,23 +963,26 @@
       letter-spacing: -0.02em;
     }
     .stat-card.highlight {
-      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-      border-color: #a7f3d0;
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      border-color: #cbd5e1;
+      transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
     }
     .stat-card.highlight .value {
-      color: #047857;
+      color: #64748b;
+      transition: color 0.35s ease;
     }
     .status-pill {
       display: inline-flex;
       align-items: center;
       gap: 4px;
       margin-top: 6px;
-      padding: 3px 8px;
+      padding: 4px 10px;
       border-radius: 20px;
       font-size: 11px;
       font-weight: 700;
-      background: rgba(4, 120, 87, 0.12);
-      color: #047857;
+      background: #e2e8f0;
+      color: #475569;
+      transition: all 0.35s ease;
     }
 
     /* Section Control Header */
@@ -1025,32 +1028,65 @@
     }
     /* Dynamic Course Data Rows */
     .data-row {
-      display: grid;
-      grid-template-columns: 2fr 2.2fr 36px;
-      gap: 10px;
+      display: flex;
       align-items: center;
+      justify-content: space-between;
+      gap: 10px;
       background: #f8fafc;
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 10px 12px;
       margin-bottom: 12px;
       transition: all 0.2s ease;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .data-row .course-name {
+      flex: 1 1 auto;
+      min-width: 140px;
     }
     .data-row-fields-wrap {
       display: flex;
       gap: 8px;
       align-items: center;
-      width: 100%;
+      flex-shrink: 0;
     }
-    .data-row-fields-wrap .field-input,
-    .data-row-fields-wrap .field-select {
-      flex: 1;
-      min-width: 0;
+    .data-row-fields-wrap .field-credit {
+      width: 70px;
+      text-align: center;
+      padding: 0 4px;
+      font-size: 12.5px;
+    }
+    .data-row-fields-wrap .field-point {
+      width: 60px;
+      text-align: center;
+      padding: 0 4px;
+      font-size: 12.5px;
+    }
+    .data-row-fields-wrap .field-grade {
+      width: 120px;
+      font-size: 12px;
+      padding: 0 6px;
+    }
+    .data-row-fields-wrap .remove-btn {
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
     }
     .data-row:hover {
       border-color: rgba(47, 78, 162, 0.3);
       background: #ffffff;
       box-shadow: var(--shadow-sm);
+    }
+    /* Hide number input spinners for clean compact inputs */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
+      appearance: textfield;
     }
     .field-input, .field-select {
       width: 100%;
@@ -1069,6 +1105,31 @@
     .field-input:focus, .field-select:focus {
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(47, 78, 162, 0.15);
+    }
+    .field-input::placeholder,
+    input::placeholder,
+    textarea::placeholder {
+      color: #64748b !important;
+      opacity: 1 !important;
+      font-weight: 500 !important;
+    }
+    .field-input::-webkit-input-placeholder,
+    input::-webkit-input-placeholder {
+      color: #64748b !important;
+      opacity: 1 !important;
+      font-weight: 500 !important;
+    }
+    .field-input.course-name::placeholder {
+      color: #64748b !important;
+      font-weight: 500 !important;
+      font-size: 13px !important;
+    }
+    .field-input.field-credit::placeholder,
+    .field-input.field-point::placeholder {
+      color: #334155 !important;
+      font-weight: 700 !important;
+      font-size: 11.5px !important;
+      opacity: 1 !important;
     }
     .remove-btn {
       width: 38px;
@@ -1089,7 +1150,32 @@
     }
 
     .semester-data-row {
-      grid-template-columns: 1.4fr 0.9fr 0.9fr 38px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .semester-data-row .semester-name-select {
+      flex: 1 1 auto;
+      min-width: 140px;
+    }
+    .semester-data-row .semester-fields-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .semester-data-row .semester-fields-wrap .semester-credit,
+    .semester-data-row .semester-fields-wrap .semester-cgpa {
+      width: 80px;
+      text-align: center;
+      padding: 0 4px;
+      font-size: 12.5px;
+    }
+    .semester-data-row .semester-fields-wrap .remove-btn {
+      width: 38px;
+      height: 42px;
+      flex-shrink: 0;
     }
 
     /* Helpful Tip Card */
@@ -1182,6 +1268,35 @@
       align-items: center;
       justify-content: center;
     }
+    /* App Footer Styles */
+    .app-footer {
+      max-width: 1200px;
+      margin: 48px auto 24px;
+      padding: 24px 16px 20px;
+      border-top: 1px dashed var(--border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 12.5px;
+      font-weight: 500;
+    }
+    .app-footer p {
+      margin: 0 0 6px;
+    }
+    .app-footer strong {
+      color: var(--primary);
+      font-weight: 700;
+    }
+    .app-footer .footer-badge {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 4px 14px;
+      background: var(--primary-light);
+      border: 1px solid rgba(47, 78, 162, 0.2);
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
 
     /* Responsive Styles */
     @media (max-width: 900px) {
@@ -1267,18 +1382,22 @@
         padding: 8px 6px !important;
         white-space: nowrap !important;
       }
-        .sem-header-bar {
+    }
+
+    /* Base Semester Header Bar & Action Buttons (Applies on all screen sizes) */
+    .sem-header-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
+      gap: 10px;
       cursor: pointer;
       user-select: none;
+      width: 100%;
     }
     .sem-header-top-row {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       flex: 1;
       min-width: 0;
     }
@@ -1289,38 +1408,196 @@
       flex-shrink: 0;
     }
     .add-course-sem-btn {
-      height: 26px;
-      padding: 0 8px;
-      font-size: 9px;
+      height: 28px;
+      padding: 0 10px;
+      font-size: 11px;
       font-weight: 700;
-      border-radius: 7px;
+      border-radius: 8px;
       background: #10B981;
       border: 1px solid #10B981;
       color: #ffffff;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 3px;
+      gap: 4px;
       white-space: nowrap;
       box-shadow: 0 2px 6px rgba(16,185,129,.2);
+      transition: all 0.2s ease;
+    }
+    .add-course-sem-btn:hover {
+      background: #059669;
+      border-color: #059669;
+      transform: translateY(-1px);
     }
     .save-to-overall-btn {
-      height: 26px;
-      padding: 0 8px;
-      font-size: 9px;
+      height: 28px;
+      padding: 0 10px;
+      font-size: 11px;
       font-weight: 700;
-      border-radius: 7px;
+      border-radius: 8px;
       background: var(--primary);
       border: 1px solid var(--primary);
       color: #ffffff;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 3px;
+      gap: 4px;
       white-space: nowrap;
-      box-shadow: 0 2px 6px rgba(47,78,162,.16);
+      box-shadow: 0 2px 6px rgba(47,78,162,.2);
+      transition: all 0.2s ease;
+    }
+    .save-to-overall-btn:hover {
+      background: var(--primary-dark);
+      border-color: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+    .remove-sem-btn {
+      width: 28px !important;
+      height: 28px !important;
+      border-radius: 8px !important;
+      border: 1px solid #fee2e2 !important;
+      background: #fef2f2 !important;
+      color: var(--accent-red) !important;
+      cursor: pointer !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      transition: all 0.2s ease !important;
+      padding: 0 !important;
+      flex: 0 0 28px !important;
+    }
+    .remove-sem-btn:hover {
+      background: #fee2e2 !important;
+      color: #dc2626 !important;
+      border-color: #fca5a5 !important;
+      transform: translateY(-1px) !important;
     }
 
+    /* Desktop Mode Styles (min-width: 769px) */
+    @media (min-width: 769px) {
+      .sem-header-bar {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 12px !important;
+        width: 100% !important;
+      }
+      .sem-header-top-row {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        flex: 1 !important;
+        min-width: 0 !important;
+      }
+      .sem-header-btns-row {
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        flex-shrink: 0 !important;
+      }
+      .sem-header-btns-row .add-course-sem-btn,
+      .sem-header-btns-row .save-to-overall-btn {
+        height: 28px !important;
+        padding: 0 10px !important;
+        font-size: 11px !important;
+        font-weight: 700 !important;
+        border-radius: 8px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+        white-space: nowrap !important;
+        box-shadow: 0 2px 6px rgba(16,185,129,.2) !important;
+      }
+      .data-row {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 10px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      .data-row .course-name {
+        flex: 1 1 auto !important;
+        min-width: 140px !important;
+        height: 42px !important;
+      }
+      .data-row-fields-wrap {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        flex-shrink: 0 !important;
+      }
+      .data-row-fields-wrap .field-credit {
+        width: 70px !important;
+        flex: 0 0 70px !important;
+        height: 42px !important;
+        font-size: 12.5px !important;
+        text-align: center !important;
+        padding: 0 4px !important;
+      }
+      .data-row-fields-wrap .field-point {
+        width: 60px !important;
+        flex: 0 0 60px !important;
+        height: 42px !important;
+        font-size: 12.5px !important;
+        text-align: center !important;
+        padding: 0 4px !important;
+      }
+      .data-row-fields-wrap .field-grade {
+        width: 120px !important;
+        flex: 0 0 120px !important;
+        height: 42px !important;
+        font-size: 12px !important;
+        padding: 0 6px !important;
+      }
+      .data-row-fields-wrap .remove-btn {
+        width: 38px !important;
+        height: 42px !important;
+        flex: 0 0 38px !important;
+      }
+      .semester-data-row {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 10px !important;
+        width: 100% !important;
+      }
+      .semester-data-row .semester-name-select {
+        flex: 1 1 auto !important;
+        min-width: 160px !important;
+        height: 42px !important;
+      }
+      .semester-data-row .semester-fields-wrap {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        flex-shrink: 0 !important;
+      }
+      .semester-data-row .semester-fields-wrap .semester-credit {
+        width: 85px !important;
+        flex: 0 0 85px !important;
+        height: 42px !important;
+        font-size: 12.5px !important;
+        text-align: center !important;
+        padding: 0 4px !important;
+      }
+      .semester-data-row .semester-fields-wrap .semester-cgpa {
+        width: 85px !important;
+        flex: 0 0 85px !important;
+        height: 42px !important;
+        font-size: 12.5px !important;
+        text-align: center !important;
+        padding: 0 4px !important;
+      }
+      .semester-data-row .semester-fields-wrap .remove-btn {
+        width: 38px !important;
+        height: 42px !important;
+        flex: 0 0 38px !important;
+      }
+    }
+
+    /* Mobile Mode Styles (max-width: 768px) */
     @media (max-width: 768px) {
       .main-wrapper {
         padding: 0 8px !important;
@@ -1338,6 +1615,7 @@
       }
       .sem-header-btns-row {
         display: flex !important;
+        align-items: center !important;
         width: 100% !important;
         gap: 6px !important;
       }
@@ -1349,6 +1627,11 @@
         font-weight: 700 !important;
         border-radius: 8px !important;
         justify-content: center !important;
+      }
+      .sem-header-btns-row .remove-sem-btn {
+        width: 32px !important;
+        height: 32px !important;
+        flex: 0 0 32px !important;
       }
       .data-row {
         display: flex !important;
@@ -1387,7 +1670,7 @@
       .data-row-fields-wrap .field-grade {
         flex: 2 1 40% !important;
         height: 36px !important;
-        min-width: 0 !important;
+        min-width: 105px !important;
         font-size: 11.5px !important;
         padding: 0 6px !important;
       }
@@ -1399,19 +1682,13 @@
       .semester-data-row {
         display: flex !important;
         flex-direction: column !important;
-        gap: 6px !important;
+        gap: 8px !important;
         padding: 10px !important;
         border-radius: 12px !important;
         margin-bottom: 12px !important;
       }
-      .semester-name-wrap {
-        display: flex !important;
-        align-items: center !important;
-        gap: 6px !important;
-        width: 100% !important;
-      }
       .semester-name-select {
-        flex: 1 !important;
+        width: 100% !important;
         height: 38px !important;
       }
       .semester-fields-wrap {
@@ -1422,15 +1699,15 @@
       }
       .semester-fields-wrap .field-input {
         flex: 1 !important;
-        height: 36px !important;
-        font-size: 11.5px !important;
+        height: 38px !important;
+        font-size: 12px !important;
         padding: 0 8px !important;
         min-width: 0 !important;
       }
-      .semester-data-row .remove-btn {
-        width: 34px !important;
+      .semester-fields-wrap .remove-btn {
+        width: 36px !important;
         height: 38px !important;
-        flex: 0 0 34px !important;
+        flex: 0 0 36px !important;
       }
       .target-grid {
         grid-template-columns: 1fr;
@@ -1441,7 +1718,7 @@
       .calc-card {
         padding: 14px 8px !important;
       }
-    }    .sem-title-badge {
+      .sem-title-badge {
         font-size: 11px !important;
         padding: 4px 8px !important;
       }
@@ -1450,9 +1727,9 @@
         padding: 3px 6px !important;
       }
       .save-to-overall-btn {
-        height: 26px !important;
-        padding: 0 7px !important;
-        font-size: 9px !important;
+        height: 32px !important;
+        padding: 0 10px !important;
+        font-size: 11px !important;
       }
     }
 
@@ -1856,22 +2133,6 @@
             </div>
           </button>
         </div>
-
-        <!-- Grading Legend -->
-        <div class="grading-legend">
-          <div class="legend-title">UU Grading Scale (4.00)</div>
-          <div class="grade-badges-grid">
-            <div class="grade-badge"><span>A (80%+)</span><strong>4.00</strong></div>
-            <div class="grade-badge"><span>A- (75-79%)</span><strong>3.75</strong></div>
-            <div class="grade-badge"><span>B+ (70-74%)</span><strong>3.50</strong></div>
-            <div class="grade-badge"><span>B (65-69%)</span><strong>3.00</strong></div>
-            <div class="grade-badge"><span>B- (60-64%)</span><strong>2.75</strong></div>
-            <div class="grade-badge"><span>C+ (55-59%)</span><strong>2.50</strong></div>
-            <div class="grade-badge"><span>C (50-54%)</span><strong>2.25</strong></div>
-            <div class="grade-badge"><span>D (40-49%)</span><strong>2.00</strong></div>
-            <div class="grade-badge"><span>F (&lt;40%)</span><strong>0.00</strong></div>
-          </div>
-        </div>
       </aside>
 
       <!-- Right Main Calculator Section -->
@@ -1912,7 +2173,7 @@
               <label>Completed Credits (Earned / Attempted)</label>
               <div class="value" id="total-credits">0.00</div>
             </div>
-            <div class="stat-card highlight">
+            <div class="stat-card highlight" id="sem-gpa-card">
               <label>Calculated Semester GPA</label>
               <div class="value" id="semester-result">0.00</div>
               <span class="status-pill" id="semester-status">Standing: —</span>
@@ -1926,7 +2187,7 @@
             <h3 style="margin:0;">Enrolled Courses List</h3>
             <button type="button" class="btn-primary" id="top-add-semester-btn" style="padding: 7px 16px; font-size: 12.5px; font-weight: 700; gap: 6px;">
               <svg class="svg-icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-              <span>+ Add Next Semester</span>
+              <span>Add Next Semester</span>
             </button>
           </div>
 
@@ -1966,10 +2227,10 @@
               <label>Total Credits (Earned / Attempted)</label>
               <div class="value" id="overall-credits">0.00</div>
             </div>
-            <div class="stat-card highlight">
+            <div class="stat-card highlight" id="overall-gpa-card">
               <label>Cumulative CGPA</label>
               <div class="value" id="overall-result">0.00</div>
-              <span class="status-pill" id="overall-status">Academic Distinction</span>
+              <span class="status-pill" id="overall-status">Standing: —</span>
             </div>
           </div>
 
@@ -2021,6 +2282,15 @@
 
     </div>
   </main>
+
+  <!-- Modern App Footer -->
+  <footer class="app-footer">
+    <div class="footer-content">
+      <p>&copy; 2026 Uttara University Student Portal (Unofficial Project). All rights reserved.</p>
+      <p class="footer-dev">Designed & Developed by <strong>Sabbir Hussan Khan</strong></p>
+      <div class="footer-badge">UU Academic Suite • CGPA & GPA Calculator</div>
+    </div>
+  </footer>
 
   <!-- Import & Auto-Sync Modal Dialog -->
   <div id="sync-modal" class="modal-overlay" style="display:none;" aria-modal="true" role="dialog">
@@ -2195,7 +2465,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
 
         semesters.forEach(s => {
           if (!Array.isArray(s.courses) || s.courses.length === 0) {
-            s.courses = [{ name: '', credit: '3', point: '', grade: '' }];
+            s.courses = [{ name: '', credit: '', point: '', grade: '' }];
           }
         });
       }
@@ -2208,16 +2478,21 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
           cgpa: String(s.cgpa ?? '0.00'),
           courses: (Array.isArray(s.courses) ? s.courses : [])
             .filter(Boolean)
-            .map(c => ({
-              name: String(c.name ?? ''),
-              credit: String(c.credit ?? ''),
-              point: String(c.point ?? ''),
-              grade: String(c.grade ?? '')
-            }))
+            .map(c => {
+              const name = String(c.name ?? '');
+              const point = String(c.point ?? '');
+              const grade = String(c.grade ?? '');
+              let credit = String(c.credit ?? '');
+              // If it's a completely untouched course with default '3', clear it so placeholder shows
+              if (credit === '3' && !name && !point && !grade) {
+                credit = '';
+              }
+              return { name, credit, point, grade };
+            })
         }));
         if (!semesters.length) semesters = [{ name: '1st Semester', credit: '0', cgpa: '0.00', courses: [] }];
         semesters.forEach(s => {
-          if (!s.courses.length) s.courses.push({ name: '', credit: '3', point: '', grade: '' });
+          if (!s.courses.length) s.courses.push({ name: '', credit: '', point: '', grade: '' });
         });
         currentSemIdx = Math.max(0, Math.min(currentSemIdx, semesters.length - 1));
       }
@@ -2258,13 +2533,112 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
 
       loadData();
 
+      function getGpaTheme(gpa) {
+        const val = Number(gpa) || 0;
+        if (val <= 0) {
+          return {
+            bg: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
+            border: '#cbd5e1',
+            valueColor: '#64748b',
+            badgeBg: '#e2e8f0',
+            badgeColor: '#475569',
+            status: 'Standing: —'
+          };
+        }
+        if (val >= 3.80) {
+          return {
+            bg: 'linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%)',
+            border: '#6ee7b7',
+            valueColor: '#047857',
+            badgeBg: '#a7f3d0',
+            badgeColor: '#065f46',
+            status: 'First Class with Distinction (A+)'
+          };
+        }
+        if (val >= 3.65) {
+          return {
+            bg: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
+            border: '#86efac',
+            valueColor: '#15803d',
+            badgeBg: '#bbf7d0',
+            badgeColor: '#166534',
+            status: 'First Class Honors (A)'
+          };
+        }
+        if (val >= 3.50) {
+          return {
+            bg: 'linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)',
+            border: '#93c5fd',
+            valueColor: '#1d4ed8',
+            badgeBg: '#bfdbfe',
+            badgeColor: '#1e40af',
+            status: 'First Class (A-)'
+          };
+        }
+        if (val >= 3.00) {
+          return {
+            bg: 'linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%)',
+            border: '#5eead4',
+            valueColor: '#0f766e',
+            badgeBg: '#99f6e4',
+            badgeColor: '#115e59',
+            status: 'Second Class Upper (B/B+)'
+          };
+        }
+        if (val >= 2.50) {
+          return {
+            bg: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)',
+            border: '#fde68a',
+            valueColor: '#b45309',
+            badgeBg: '#fde68a',
+            badgeColor: '#92400e',
+            status: 'Second Class Lower (C+/B-)'
+          };
+        }
+        if (val >= 2.00) {
+          return {
+            bg: 'linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%)',
+            border: '#fed7aa',
+            valueColor: '#c2410c',
+            badgeBg: '#fed7aa',
+            badgeColor: '#9a3412',
+            status: 'Pass Class (D/C)'
+          };
+        }
+        return {
+          bg: 'linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%)',
+          border: '#fecdd3',
+          valueColor: '#be123c',
+          badgeBg: '#fecdd3',
+          badgeColor: '#9f1239',
+          status: 'Academic Probation (F)'
+        };
+      }
+
       function getGradeStatusText(gpa) {
-        if (gpa >= 3.80) return 'First Class with Distinction';
-        if (gpa >= 3.65) return 'First Class Honors';
-        if (gpa >= 3.00) return 'Second Class Upper';
-        if (gpa >= 2.50) return 'Satisfactory Standing';
-        if (gpa > 0) return 'Needs Academic Improvement';
-        return 'Standing: —';
+        return getGpaTheme(gpa).status;
+      }
+
+      function applyGpaCardTheme(cardId, resId, statId, gpa) {
+        const card = document.getElementById(cardId);
+        const resEl = document.getElementById(resId);
+        const statEl = document.getElementById(statId);
+        const theme = getGpaTheme(gpa);
+
+        if (resEl) {
+          const num = Number(gpa) || 0;
+          resEl.textContent = num ? num.toFixed(2) : '0.00';
+          resEl.style.color = theme.valueColor;
+        }
+        if (statEl) {
+          statEl.textContent = theme.status;
+          statEl.style.background = theme.badgeBg;
+          statEl.style.color = theme.badgeColor;
+        }
+        if (card) {
+          card.style.background = theme.bg;
+          card.style.borderColor = theme.border;
+        }
       }
 
       function parseGrade(val) {
@@ -2276,9 +2650,12 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
       }
 
       function getCourseTone(point, grade) {
-        const gp = parseGrade(point) ?? parseGrade(grade);
+        const hasPoint = String(point ?? '').trim() !== '';
+        const hasGrade = String(grade ?? '').trim() !== '';
+        if (!hasPoint && !hasGrade) return { bg: '#ffffff', border: 'var(--border)' };
+        const gp = (hasPoint ? parseGrade(point) : null) ?? (hasGrade ? parseGrade(grade) : null);
+        if (gp === null) return { bg: '#ffffff', border: 'var(--border)' };
         if (gp === 0) return { bg: '#fff0f2', border: '#f29aaa' };
-        if (gp === null) return { bg: '#f3f7ff', border: '#c7d7f2' };
         if (gp >= 3.75) return { bg: '#dce8ff', border: '#8eace8' };
         if (gp >= 3.50) return { bg: '#e7efff', border: '#a8bfed' };
         if (gp >= 3.00) return { bg: '#eef4ff', border: '#bfd0ef' };
@@ -2287,6 +2664,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
       }
 
       function nearestGrade(point) {
+        if (point === '' || point === null || point === undefined) return '';
         const n = Number(point);
         if (!Number.isFinite(n) || n < 0 || n > 4) return '';
         return Object.entries(gradePoints).sort((a, b) => Math.abs(a[1] - n) - Math.abs(b[1] - n))[0][0];
@@ -2349,7 +2727,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
               <!-- Semester Header Bar (Clickable to Collapse/Expand) -->
               <div class="sem-header-bar" data-toggle-sem="${semIdx}">
                 <div class="sem-header-top-row">
-                  <div style="flex:1; min-width:0; display:flex; align-items:center; gap:6px; overflow:hidden;">
+                  <div style="flex:1; min-width:0; display:flex; align-items:center; gap:8px; overflow:hidden;">
                     <span style="font-size:10px; color:var(--text-muted); font-weight:700; transform:${isCollapsed ? 'rotate(-90deg)' : 'rotate(0deg)'}; transition:transform 0.2s; flex-shrink:0;">
                       ▼
                     </span>
@@ -2360,23 +2738,22 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
                       ${semCr.toFixed(1)} Cr | GPA: ${semGpa}
                     </span>
                   </div>
-
-                  ${semesters.length > 1 ? `
-                    <button type="button" class="remove-btn remove-sem-btn" data-sem-idx="${semIdx}" title="Remove Semester" style="width:26px; height:26px;">
-                      <svg class="svg-icon" viewBox="0 0 24 24" style="width:13px;height:13px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    </button>
-                  ` : ''}
                 </div>
 
                 <div class="sem-header-btns-row">
                   <button type="button" class="add-course-sem-btn" data-sem-idx="${semIdx}" title="Add a course to ${esc(s.name)}" aria-label="Add course to ${esc(s.name)}">
-                    <svg class="svg-icon" viewBox="0 0 24 24" style="width:10px;height:10px;color:#ffffff;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                    <span>+ Add Course</span>
+                    <svg class="svg-icon" viewBox="0 0 24 24" style="width:11px;height:11px;fill:none;stroke:currentColor;stroke-width:2.5;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    <span>Add Course</span>
                   </button>
                   <button type="button" class="save-to-overall-btn" data-sem-idx="${semIdx}" title="Save this semester result to Overall CGPA" aria-label="Save this semester result to Overall CGPA">
-                    <svg class="svg-icon" viewBox="0 0 24 24" style="width:10px;height:10px;color:#ffffff;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path></svg>
+                    <svg class="svg-icon" viewBox="0 0 24 24" style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                     <span>Save to Overall</span>
                   </button>
+                  ${semesters.length > 1 ? `
+                    <button type="button" class="remove-sem-btn" data-sem-idx="${semIdx}" title="Remove Semester" aria-label="Remove ${esc(s.name)}">
+                      <svg class="svg-icon" viewBox="0 0 24 24" style="width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.5;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                  ` : ''}
                 </div>
               </div>
 
@@ -2388,8 +2765,8 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
                   <div class="data-row" style="background:${tone.bg}; border-color:${tone.border};">
                     <input class="field-input course-name" data-sem-idx="${semIdx}" data-c-idx="${cIdx}" data-k="name" value="${esc(c.name)}" placeholder="Course Title (e.g. Algorithms)" aria-label="Course title" required>
                     <div class="data-row-fields-wrap">
-                      <input class="field-input field-credit" data-sem-idx="${semIdx}" data-c-idx="${cIdx}" data-k="credit" type="number" min="0" step="0.5" value="${esc(c.credit)}" placeholder="Cr" aria-label="Course credits" required>
-                      <input class="field-input field-point" data-sem-idx="${semIdx}" data-c-idx="${cIdx}" data-k="point" type="number" min="0" max="4" step="0.01" value="${esc(c.point)}" placeholder="Pt" aria-label="Grade point" required>
+                      <input class="field-input field-credit" data-sem-idx="${semIdx}" data-c-idx="${cIdx}" data-k="credit" type="number" min="0" step="0.5" value="${esc(c.credit)}" placeholder="Credit" aria-label="Course credits" required>
+                      <input class="field-input field-point" data-sem-idx="${semIdx}" data-c-idx="${cIdx}" data-k="point" type="number" min="0" max="4" step="0.01" value="${esc(c.point)}" placeholder="Point" aria-label="Grade point" required>
                       <select class="field-select field-grade" data-sem-idx="${semIdx}" data-c-idx="${cIdx}" data-k="grade" aria-label="Letter grade">${gradeSelectOptionsHtml()}</select>
                       <button type="button" class="remove-btn" data-remove-course="${semIdx}-${cIdx}" title="Remove Course" aria-label="Remove course">
                         <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -2409,7 +2786,10 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
         semesters.forEach((s, semIdx) => {
           (s.courses || []).forEach((c, cIdx) => {
             const sel = box.querySelector(`select[data-sem-idx="${semIdx}"][data-c-idx="${cIdx}"][data-k="grade"]`);
-            if (sel) sel.value = c.grade || nearestGrade(c.point);
+            if (sel) {
+              const hasPoint = String(c.point ?? '').trim() !== '';
+              sel.value = c.grade || (hasPoint ? nearestGrade(c.point) : '');
+            }
           });
         });
 
@@ -2470,7 +2850,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
             const sIdx = +el.dataset.semIdx;
             if (semesters[sIdx]) {
               if (!Array.isArray(semesters[sIdx].courses)) semesters[sIdx].courses = [];
-              semesters[sIdx].courses.push({ name: '', credit: '3', point: '', grade: '' });
+              semesters[sIdx].courses.unshift({ name: '', credit: '', point: '', grade: '' });
               collapsedSemesters[sIdx] = false; // Expand when adding course
               saveData();
               renderCourses();
@@ -2485,7 +2865,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
             semesters.splice(sIdx, 1);
             delete collapsedSemesters[sIdx];
             if (!semesters.length) {
-              semesters.push({ name: '1st Semester', credit: '0', cgpa: '0.00', courses: [{ name: '', credit: '3', point: '', grade: '' }] });
+              semesters.push({ name: '1st Semester', credit: '0', cgpa: '0.00', courses: [{ name: '', credit: '', point: '', grade: '' }] });
             }
             currentSemIdx = Math.max(0, Math.min(currentSemIdx, semesters.length - 1));
             saveData();
@@ -2507,7 +2887,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
             name: semTitle,
             credit: '0',
             cgpa: '0.00',
-            courses: [{ name: '', credit: '3', point: '', grade: '' }]
+            courses: [{ name: '', credit: '', point: '', grade: '' }]
           });
 
           saveData();
@@ -2535,19 +2915,46 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
         if (!sem || !Array.isArray(sem.courses) || !sem.courses[cIdx]) return;
 
         const course = sem.courses[cIdx];
-        course[key] = el.value;
 
         if (key === 'point') {
-          const grade = nearestGrade(el.value);
-          if (grade) {
-            course.grade = grade;
-            const sel = document.querySelector(`select[data-sem-idx="${sIdx}"][data-c-idx="${cIdx}"][data-k="grade"]`);
-            if (sel) sel.value = grade;
+          // Strictly prevent > 4 or < 0
+          let val = String(el.value ?? '').trim();
+          if (val !== '') {
+            const num = parseFloat(val);
+            if (!isNaN(num)) {
+              if (num > 4) {
+                el.value = '4';
+                val = '4';
+              } else if (num < 0) {
+                el.value = '0';
+                val = '0';
+              }
+            }
           }
-        } else if (key === 'grade' && el.value) {
-          course.point = gradePoints[el.value].toFixed(2);
+          course[key] = el.value;
+          const hasVal = String(el.value ?? '').trim() !== '';
+          const grade = hasVal ? nearestGrade(el.value) : '';
+          course.grade = grade;
+          const sel = document.querySelector(`select[data-sem-idx="${sIdx}"][data-c-idx="${cIdx}"][data-k="grade"]`);
+          if (sel) sel.value = grade;
+        } else if (key === 'grade') {
+          course[key] = el.value;
+          if (el.value && gradePoints[el.value] !== undefined) {
+            course.point = gradePoints[el.value].toFixed(2);
+          } else {
+            course.point = '';
+          }
           const inp = document.querySelector(`input[data-sem-idx="${sIdx}"][data-c-idx="${cIdx}"][data-k="point"]`);
           if (inp) inp.value = course.point;
+        } else {
+          course[key] = el.value;
+        }
+
+        const rowEl = el.closest('.data-row');
+        if (rowEl) {
+          const tone = getCourseTone(course.point, course.grade);
+          rowEl.style.background = tone.bg;
+          rowEl.style.borderColor = tone.border;
         }
 
         saveData();
@@ -2585,20 +2992,13 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
         const overallGpa = totalAttemptedCredits ? (totalPoints / totalAttemptedCredits) : 0;
 
         const totalCredEl = $('#total-credits');
-        const semResEl = $('#semester-result');
-        const semStatEl = $('#semester-status');
-
         if (totalCredEl) {
           totalCredEl.textContent = totalAttemptedCredits > 0
             ? (totalEarnedCredits === totalAttemptedCredits ? totalEarnedCredits.toFixed(1) : `${totalEarnedCredits.toFixed(1)} / ${totalAttemptedCredits.toFixed(1)}`)
             : '0.00';
         }
-        if (semResEl) {
-          semResEl.textContent = overallGpa ? overallGpa.toFixed(2) : '0.00';
-        }
-        if (semStatEl) {
-          semStatEl.textContent = getGradeStatusText(overallGpa);
-        }
+
+        applyGpaCardTheme('sem-gpa-card', 'semester-result', 'semester-status', overallGpa);
 
         saveData();
       }
@@ -2642,17 +3042,15 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
         const box = $('#semester-list');
         box.innerHTML = semesters.map((s, i) => `
           <div class="data-row semester-data-row" style="margin-bottom:12px;">
-            <div class="semester-name-wrap" style="display:flex; align-items:center; gap:6px; width:100%;">
-              <select class="field-select semester-name-select" data-i="${i}" data-k="name" aria-label="Semester title" style="flex:1;">
-                ${semesterSelectOptionsHtml(s.name)}
-              </select>
+            <select class="field-select semester-name-select" data-i="${i}" data-k="name" aria-label="Semester title">
+              ${semesterSelectOptionsHtml(s.name)}
+            </select>
+            <div class="semester-fields-wrap">
+              <input class="field-input semester-credit" data-i="${i}" data-k="credit" type="number" min="0" step="0.5" value="${esc(s.credit)}" placeholder="Credits" aria-label="Completed credits" required>
+              <input class="field-input semester-cgpa" data-i="${i}" data-k="cgpa" type="number" min="0" max="4" step="0.01" value="${esc(s.cgpa)}" placeholder="CGPA" aria-label="Semester CGPA" required>
               <button type="button" class="remove-btn" data-remove-semester="${i}" title="Remove Semester" aria-label="Remove semester">
                 <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
               </button>
-            </div>
-            <div class="semester-fields-wrap" style="display:flex; align-items:center; gap:6px; width:100%;">
-              <input class="field-input" data-i="${i}" data-k="credit" type="number" min="0" step="0.5" value="${esc(s.credit)}" placeholder="Completed Credits" aria-label="Completed credits" required style="flex:1;">
-              <input class="field-input" data-i="${i}" data-k="cgpa" type="number" min="0" max="4" step="0.01" value="${esc(s.cgpa)}" placeholder="Semester CGPA" aria-label="Semester CGPA" required style="flex:1;">
             </div>
           </div>
         `).join('');
@@ -2662,7 +3060,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
         box.querySelectorAll('[data-remove-semester]').forEach(el => {
           el.addEventListener('click', () => {
             semesters.splice(+el.dataset.removeSemester, 1);
-            if (!semesters.length) semesters.push({ name: '1st Semester', credit: '0', cgpa: '0.00', courses: [{ name: '', credit: '3', point: '', grade: '' }] });
+            if (!semesters.length) semesters.push({ name: '1st Semester', credit: '0', cgpa: '0.00', courses: [{ name: '', credit: '', point: '', grade: '' }] });
             currentSemIdx = Math.max(0, Math.min(currentSemIdx, semesters.length - 1));
             saveData();
             renderSemesters();
@@ -2676,6 +3074,15 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
         const el = e.target;
         const index = +el.dataset.i;
         const key = el.dataset.k;
+        if (key === 'cgpa') {
+          const val = String(el.value ?? '').trim();
+          if (val !== '') {
+            const num = parseFloat(val);
+            if (!isNaN(num) && num > 4) {
+              el.value = '4';
+            }
+          }
+        }
         semesters[index][key] = el.value;
         saveData();
         updateOverallCalculations();
@@ -2694,8 +3101,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
 
         const overallCgpa = totalCredits ? (weightedPoints / totalCredits) : 0;
         $('#overall-credits').textContent = totalCredits > 0 ? totalCredits.toFixed(1) : '0.00';
-        $('#overall-result').textContent = overallCgpa ? overallCgpa.toFixed(2) : '0.00';
-        $('#overall-status').textContent = getGradeStatusText(overallCgpa);
+        applyGpaCardTheme('overall-gpa-card', 'overall-result', 'overall-status', overallCgpa);
 
         calculateTargetGpa(totalCredits, weightedPoints);
       }
@@ -2791,7 +3197,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
         const targetSem = semesters[targetIdx];
         if (!targetSem) return;
         if (!Array.isArray(targetSem.courses)) targetSem.courses = [];
-        targetSem.courses.unshift({ name: '', credit: '3', point: '', grade: '' });
+        targetSem.courses.unshift({ name: '', credit: '', point: '', grade: '' });
         currentSemIdx = targetIdx;
         collapsedSemesters[targetIdx] = false;
         saveData();
@@ -2869,7 +3275,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
         currentSemIdx = semesters.length - 1;
         const activeSem = semesters[currentSemIdx];
         if (activeSem && !activeSem.courses?.length) {
-          activeSem.courses = [{ name: '', credit: '3', point: '', grade: '' }];
+          activeSem.courses = [{ name: '', credit: '', point: '', grade: '' }];
         }
 
         saveData();
@@ -2883,7 +3289,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
       $('#add-semester').addEventListener('click', () => {
         normalizeSemesterState();
         const nextSemNum = nextAvailableSemesterNumber();
-        semesters.push({ name: semesterTitle(nextSemNum), credit: '0', cgpa: '0.00', courses: [{ name: '', credit: '3', point: '', grade: '' }] });
+        semesters.push({ name: semesterTitle(nextSemNum), credit: '0', cgpa: '0.00', courses: [{ name: '', credit: '', point: '', grade: '' }] });
         currentSemIdx = semesters.length - 1;
         saveData();
         renderCourses();
@@ -2904,7 +3310,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
         if (confirm('Reset all courses for this semester?')) {
           const activeSem = semesters[currentSemIdx] || semesters[0];
           if (activeSem) {
-            activeSem.courses = [{ name: '', credit: '3', point: '', grade: '' }];
+            activeSem.courses = [{ name: '', credit: '', point: '', grade: '' }];
             saveData();
             renderCourses();
           }
@@ -3492,16 +3898,15 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
       }
 
       function showLoginModal() {
-        if (!loginModal) return;
-        if (window.StudentAuth) {
-          const savedId = StudentAuth.getRememberedId();
-          if (savedId && inputStudentId) {
-            inputStudentId.value = savedId;
-            if (inputRememberMe) inputRememberMe.checked = true;
-          }
+        const moreNavMenu = document.getElementById('more-nav-dropdown-menu');
+        if (moreNavMenu) moreNavMenu.style.display = 'none';
+        if (typeof hideMobileSheet === 'function') hideMobileSheet();
+        if (typeof openModal === 'function') {
+          openModal();
+        } else {
+          const syncModal = document.getElementById('sync-modal');
+          if (syncModal) syncModal.style.display = 'flex';
         }
-        authAlertBox.style.display = 'none';
-        loginModal.style.display = 'flex';
       }
 
       function hideLoginModal() {
