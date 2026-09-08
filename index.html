@@ -2293,6 +2293,63 @@
       .field-grade { width: 72px !important; }
       .pass-grade-summary { display: grid !important; }
     }
+
+    /* Compact CGPA brand header: keep the calculator focused on every screen. */
+    .dash-header.navbar {
+      width: calc(100% - 32px) !important;
+      max-width: 1260px !important;
+      margin: 8px auto 2px !important;
+      padding: 10px 18px !important;
+      min-height: 58px !important;
+      border-radius: 14px !important;
+      border: 1px solid #E2E8F0 !important;
+      box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06) !important;
+      position: sticky !important;
+      position: -webkit-sticky !important;
+      top: 8px !important;
+      z-index: 1000 !important;
+      box-sizing: border-box !important;
+      align-self: center !important;
+      isolation: isolate !important;
+    }
+    .dash-header.navbar .header-actions {
+      display: flex !important;
+      align-items: center !important;
+      margin-left: auto !important;
+      padding-left: 0 !important;
+      border-left: 0 !important;
+      gap: 20px !important;
+    }
+    .dash-header.navbar .brand {
+      gap: 10px !important;
+    }
+    .main-wrapper {
+      margin-top: 8px !important;
+    }
+    html, body {
+      overflow-x: clip !important;
+    }
+    @media screen and (max-width: 900px) {
+      .dash-header.navbar .header-actions {
+        display: none !important;
+        border-left: 0 !important;
+        padding-left: 0 !important;
+        gap: 0 !important;
+      }
+      .dash-header.navbar {
+        width: calc(100% - 16px) !important;
+        margin: 10px auto 8px !important;
+        padding: 8px 12px !important;
+        min-height: 52px !important;
+      }
+      .dash-header.navbar .brand-text .title {
+        font-size: 14px !important;
+      }
+      .dash-header.navbar .brand-text .live-badge {
+        font-size: 9px !important;
+        white-space: nowrap !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -2666,7 +2723,7 @@
   <!-- Modern App Footer -->
   <footer class="app-footer">
     <div class="footer-content">
-      <p>&copy; 2026 Uttara University Student Portal (Unofficial Project). All rights reserved.</p>
+      <p>&copy; <span id="footer-year">2026</span> Uttara University Student Portal (Unofficial Project). All rights reserved.</p>
       <p class="footer-dev">Designed & Developed by <strong>Sabbir Hussan Khan</strong></p>
       <div class="footer-badge">UU Academic Suite • CGPA & GPA Calculator</div>
     </div>
@@ -4649,5 +4706,10 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
       <span id="bnav-login-text">More</span>
     </a>
   </nav>
+  <script>
+    document.querySelectorAll('#footer-year').forEach((el) => {
+      el.textContent = new Date().getFullYear();
+    });
+  </script>
 </body>
 </html>
