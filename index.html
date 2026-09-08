@@ -432,6 +432,11 @@
       box-shadow: 0 2px 6px rgba(36, 81, 196, 0.12);
       position: relative;
     }
+    .header-profile-wrap,
+    .more-profile-section,
+    #login-modal {
+      display: none !important;
+    }
     .profile-avatar-btn:hover {
       background: #2451C4;
       color: #ffffff;
@@ -614,7 +619,8 @@
       width: 100% !important;
       max-width: 520px !important;
       padding: 14px 20px 32px !important;
-      margin-bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
+      /* Sit directly on top of the 64px mobile bottom navigation. */
+      margin-bottom: calc(64px + env(safe-area-inset-bottom, 0px)) !important;
       box-shadow: 0 -12px 40px rgba(14, 27, 51, 0.25) !important;
       animation: slideUpSheet 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
       position: relative !important;
@@ -702,6 +708,49 @@
     }
 
     /* Main Container */
+    @media (max-width: 900px) {
+      .bottom-nav {
+        display: flex !important;
+        position: fixed !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        height: 64px !important;
+        background: #FFFFFF !important;
+        border-top: 1px solid #E2E8F0 !important;
+        box-shadow: 0 -4px 20px rgba(14, 27, 51, 0.08) !important;
+        align-items: center !important;
+        justify-content: space-around !important;
+        padding: 4px 8px !important;
+        z-index: 999999 !important;
+      }
+      .bottom-nav .bnav-item {
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 3px !important;
+        height: 100% !important;
+        color: #64748B !important;
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        text-decoration: none !important;
+      }
+      .bottom-nav .bnav-item.active {
+        color: #2451C4 !important;
+        font-weight: 700 !important;
+      }
+      .bottom-nav .bnav-item svg {
+        width: 22px !important;
+        height: 22px !important;
+        stroke: currentColor !important;
+      }
+      body {
+        padding-bottom: 76px !important;
+      }
+    }
+
     .main-wrapper {
       max-width: 1200px;
       width: 100%;
@@ -2121,15 +2170,128 @@
       }
     }
 
-    /* Print Stylesheet for PDF/Printing */
+    /* Final clean print override: readable A4 transcript layout. */
     @media print {
-      .navbar, .mode-switch-group, .action-btn-group, .btn-primary, .remove-btn, .tip-box, .grading-legend, .modal-overlay {
+      @page { size: A4 portrait; margin: 10mm 12mm; }
+      html, body {
+        background: #fff !important;
+        color: #0f172a !important;
+        font-size: 10pt !important;
+        width: 100% !important;
+        overflow: visible !important;
+      }
+      .dash-header, .bottom-nav, .hero-banner, .card-panel, footer,
+      .action-btn-group, .mode-switch-group, .modal-overlay,
+      .add-course-sem-btn, .save-to-overall-btn, .remove-sem-btn,
+      .remove-btn, .tip-box, .target-planner, .grading-legend,
+      .list-section-header button, #top-add-semester-btn {
         display: none !important;
       }
-      body { background: #fff; color: #000; }
-      .grid-container { display: block; }
-      .calc-card, .card-panel { border: none; box-shadow: none; padding: 0; }
-      .hero-banner { background: #1e3575 !important; color: #fff !important; }
+      .main-wrapper, .grid-container, .calc-card {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+        border: 0 !important;
+        box-shadow: none !important;
+        transform: none !important;
+      }
+      .calc-header-bar {
+        display: block !important;
+        border-bottom: 2px solid #1e3575 !important;
+        padding: 0 0 7px !important;
+        margin: 0 0 12px !important;
+      }
+      .calc-header-title h2 {
+        color: #0e1b33 !important;
+        font-size: 17pt !important;
+        margin: 0 !important;
+      }
+      .calc-header-title p {
+        display: block !important;
+        color: #475569 !important;
+        font-size: 9pt !important;
+        margin: 3px 0 0 !important;
+      }
+      .stats-dashboard {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 8px !important;
+        margin: 0 0 12px !important;
+      }
+      .stat-card {
+        min-width: 0 !important;
+        padding: 8px 10px !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 7px !important;
+        background: #f8fafc !important;
+      }
+      .stat-card label { font-size: 7.5pt !important; }
+      .stat-card .value { font-size: 14pt !important; }
+      #semester-view .list-section-header {
+        display: flex !important;
+        margin: 0 0 6px !important;
+      }
+      #semester-view .list-section-header h3 {
+        font-size: 10pt !important;
+      }
+      #course-list, #semester-list, .rows-container {
+        display: block !important;
+        width: 100% !important;
+        column-count: 1 !important;
+        column-gap: 0 !important;
+      }
+      .semester-section-block {
+        display: block !important;
+        width: 100% !important;
+        margin: 0 0 10px !important;
+        padding: 8px 10px !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 8px !important;
+        background: #fff !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+      .sem-header-bar { margin-bottom: 4px !important; }
+      .sem-courses-body {
+        display: block !important;
+        margin-top: 5px !important;
+        padding-top: 5px !important;
+        border-top: 1px solid #e2e8f0 !important;
+      }
+      .data-row {
+        display: flex !important;
+        gap: 8px !important;
+        margin: 0 !important;
+        padding: 5px 0 !important;
+        border: 0 !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+        border-radius: 0 !important;
+        background: #fff !important;
+      }
+      .data-row .course-name {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+      }
+      .data-row-fields-wrap {
+        display: flex !important;
+        gap: 10px !important;
+        flex-shrink: 0 !important;
+      }
+      .field-input, .field-select, input, select {
+        height: 18px !important;
+        padding: 0 !important;
+        border: 0 !important;
+        background: transparent !important;
+        color: #0f172a !important;
+        font-size: 8.5pt !important;
+        box-shadow: none !important;
+      }
+      .field-credit { width: 38px !important; }
+      .field-point { width: 42px !important; }
+      .field-grade { width: 72px !important; }
+      .pass-grade-summary { display: grid !important; }
     }
   </style>
 </head>
@@ -2185,7 +2347,7 @@
 
           <div class="more-dropdown-card" id="more-nav-menu" style="display: none;">
             <!-- Profile / Login Option Inside Dropdown -->
-            <div id="more-user-profile-section" style="padding: 6px 6px 10px; border-bottom: 1px solid #E2E8F0; margin-bottom: 8px;">
+            <div class="more-profile-section" id="more-user-profile-section" style="padding: 6px 6px 10px; border-bottom: 1px solid #E2E8F0; margin-bottom: 8px;">
               <div id="more-user-logged-in" style="display: none; flex-direction: column; gap: 8px;">
                 <div style="display: flex; align-items: center; gap: 10px;">
                   <div style="width: 36px; height: 36px; border-radius: 50%; background: #EAF0FC; color: #2451C4; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0;">
@@ -2246,7 +2408,7 @@
       </div>
 
       <!-- Profile Avatar Icon Button & Dropdown Menu -->
-      <div style="position: relative;">
+      <div class="header-profile-wrap" style="position: relative;">
         <button class="profile-avatar-btn" id="top-avatar-btn" title="Profile / Student Login" aria-label="Profile / Student Login">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
           <span class="avatar-active-dot" id="top-avatar-dot" style="display:none;"></span>
@@ -2523,18 +2685,18 @@
 
       <!-- Modal Navigation Tabs -->
       <div style="display:flex; border-bottom:1px solid var(--border); margin-bottom:20px; gap:8px;">
-        <button type="button" id="tab-login-btn" style="padding:8px 14px; font-size:12px; font-weight:700; border:none; background:none; border-bottom:2px solid var(--primary); color:var(--primary); cursor:pointer; display:flex; align-items:center; gap:6px;">
+        <button type="button" id="tab-login-btn" style="display:none;">
           <svg class="svg-icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
           <span>MY UU Portal Login</span>
         </button>
-        <button type="button" id="tab-paste-btn" style="padding:8px 14px; font-size:12px; font-weight:700; border:none; background:none; border-bottom:2px solid transparent; color:var(--text-muted); cursor:pointer; display:flex; align-items:center; gap:6px;">
+        <button type="button" id="tab-paste-btn" style="padding:8px 14px; font-size:12px; font-weight:700; border:none; background:none; border-bottom:2px solid var(--primary); color:var(--primary); cursor:pointer; display:flex; align-items:center; gap:6px;">
           <svg class="svg-icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><path d="M16 4h2a2 2 0 0 1-2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
           <span>Paste Result Text</span>
         </button>
       </div>
 
       <!-- Tab 1: Portal Login & Session -->
-      <div id="modal-tab-login">
+      <div id="modal-tab-login" style="display:none;">
         <!-- Active Session Box (Shown when logged in) -->
         <div id="portal-active-session-box" style="display:none; background:#ecfdf5; border:1px solid #a7f3d0; border-radius:12px; padding:18px; text-align:center; margin-bottom:16px;">
           <div style="font-size:13px; font-weight:700; color:#047857; margin-bottom:6px;">
@@ -2569,7 +2731,7 @@
       </div>
 
       <!-- Tab 2: Copy-Paste Text -->
-      <div id="modal-tab-paste" style="display:none;">
+      <div id="modal-tab-paste">
         <div style="margin-bottom:20px;">
           <label style="font-size:12px; font-weight:700; color:var(--text-dark); display:block; margin-bottom:6px;">Paste Portal Result Table / Text</label>
           <textarea id="paste-result-input" class="field-input" style="height:120px; padding:10px; font-size:12px; resize:vertical; line-height:1.4;" placeholder="Copy & paste your grade table directly from MY UU Portal.
@@ -3548,29 +3710,12 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
       const modal = $('#sync-modal');
       
       function renderPortalSessionUI() {
-        const formBox = $('#portal-login-form-box');
         const sessionBox = $('#portal-active-session-box');
-        const displayId = $('#session-student-id-display');
         const mainSessionBadge = $('#main-active-session-badge');
-        const mainSessionId = $('#main-session-student-id');
         const syncBtnLabel = $('#open-sync-btn-label');
-
-        if (portalSession && portalSession.loggedIn && portalSession.studentId) {
-          // Keep both import methods available even when a session is active.
-          if (formBox) formBox.style.display = 'block';
-          if (sessionBox) sessionBox.style.display = 'block';
-          if (displayId) displayId.textContent = portalSession.studentId;
-          
-          if (mainSessionBadge) mainSessionBadge.style.display = 'block';
-          if (mainSessionId) mainSessionId.textContent = portalSession.studentId;
-          if (syncBtnLabel) syncBtnLabel.textContent = `Sync (${portalSession.studentId})`;
-        } else {
-          if (formBox) formBox.style.display = 'block';
-          if (sessionBox) sessionBox.style.display = 'none';
-
-          if (mainSessionBadge) mainSessionBadge.style.display = 'none';
-          if (syncBtnLabel) syncBtnLabel.textContent = 'Import Result';
-        }
+        if (sessionBox) sessionBox.style.display = 'none';
+        if (mainSessionBadge) mainSessionBadge.style.display = 'none';
+        if (syncBtnLabel) syncBtnLabel.textContent = 'Import Result';
       }
 
       const openModal = () => {
@@ -3596,21 +3741,9 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
         }
       }
 
-      $('#open-sync-btn').addEventListener('click', (e) => {
-        if (portalSession && portalSession.loggedIn && portalSession.verified && portalSession.studentId) {
-          fetchLatestPortalResults(portalSession.studentId);
-        } else {
-          openModal();
-        }
-      });
+      $('#open-sync-btn').addEventListener('click', () => openModal());
       const openSyncOverallBtn = $('#open-sync-btn-overall');
-      if (openSyncOverallBtn) openSyncOverallBtn.addEventListener('click', () => {
-        if (portalSession && portalSession.loggedIn && portalSession.verified && portalSession.studentId) {
-          fetchLatestPortalResults(portalSession.studentId);
-        } else {
-          openModal();
-        }
-      });
+      if (openSyncOverallBtn) openSyncOverallBtn.addEventListener('click', () => openModal());
       $('#close-modal-btn').addEventListener('click', () => modal.style.display = 'none');
       document.querySelectorAll('.modal-cancel-btn').forEach(b => b.addEventListener('click', () => modal.style.display = 'none'));
 
@@ -4438,7 +4571,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
       </div>
 
       <!-- Profile / Login Option inside Mobile Sheet -->
-      <div id="mobile-sheet-profile-section" style="padding: 6px 6px 12px; border-bottom: 1px solid #E2E8F0; margin-bottom: 10px;">
+      <div class="mobile-profile-section" id="mobile-sheet-profile-section" style="display:none;">
         <div id="mobile-sheet-logged-in" style="display: none; flex-direction: column; gap: 8px;">
           <div style="display: flex; align-items: center; gap: 10px;">
             <div style="width: 40px; height: 40px; border-radius: 50%; background: #EAF0FC; color: #2451C4; display: flex; align-items: center; justify-content: center; font-weight: 700;">
