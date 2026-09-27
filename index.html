@@ -2832,7 +2832,7 @@
       </div>
 
       <!-- Modal Navigation Tabs -->
-      <div style="display:flex; border-bottom:1px solid var(--border); margin-bottom:20px; gap:8px;">
+      <div style="display:flex; border-bottom:1px solid var(--border); margin-bottom:14px; gap:8px;">
         <button type="button" id="tab-login-btn" style="display:none;">
           <svg class="svg-icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
           <span>MY UU Portal Login</span>
@@ -2841,6 +2841,20 @@
           <svg class="svg-icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><path d="M16 4h2a2 2 0 0 1-2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
           <span>Paste Result Text</span>
         </button>
+      </div>
+
+      <!-- Target Semester Selector (Auto-selects blank semester e.g. 2nd Semester) -->
+      <div style="margin-bottom:16px; background:#f8fafc; border:1px solid var(--border); border-radius:12px; padding:12px 14px;">
+        <label for="import-target-semester-select" style="font-size:12px; font-weight:700; color:var(--text-dark); display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+          <span>Import Into Semester:</span>
+          <span id="import-target-badge" style="font-size:10.5px; font-weight:700; color:var(--primary); background:var(--primary-light); padding:2px 8px; border-radius:6px;">Auto-detected</span>
+        </label>
+        <select id="import-target-semester-select" class="field-select" style="height:38px; font-size:12.5px; font-weight:600; border-radius:8px; width:100%; background:#ffffff;">
+          <!-- Dynamically populated when modal opens -->
+        </select>
+        <div style="font-size:11px; color:var(--text-muted); margin-top:5px;">
+          If 1st Semester already has data, results will automatically go to your next/blank semester without overwriting!
+        </div>
       </div>
 
       <!-- Tab 1: Portal Login & Session -->
@@ -3267,6 +3281,11 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
                       ${semCr.toFixed(1)} Cr | GPA: ${semGpa}
                     </span>
                   </div>
+                  ${semesters.length > 1 ? `
+                    <button type="button" class="remove-sem-btn" data-sem-idx="${semIdx}" title="Delete ${esc(s.name)}" aria-label="Delete ${esc(s.name)}" style="margin-left:auto;">
+                      <svg class="svg-icon" viewBox="0 0 24 24" style="width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    </button>
+                  ` : ''}
                 </div>
 
                 <div class="sem-header-btns-row">
@@ -3278,11 +3297,6 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
                     <svg class="svg-icon" viewBox="0 0 24 24" style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                     <span>Save to Overall</span>
                   </button>
-                  ${semesters.length > 1 ? `
-                    <button type="button" class="remove-sem-btn" data-sem-idx="${semIdx}" title="Remove Semester" aria-label="Remove ${esc(s.name)}">
-                      <svg class="svg-icon" viewBox="0 0 24 24" style="width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.5;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    </button>
-                  ` : ''}
                 </div>
               </div>
 
@@ -3391,6 +3405,11 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
           el.addEventListener('click', (e) => {
             e.stopPropagation();
             const sIdx = +el.dataset.semIdx;
+            const targetSem = semesters[sIdx];
+            const semName = targetSem?.name || 'this semester';
+            if (!confirm(`Are you sure you want to delete ${semName}? All courses in this semester will be removed.`)) {
+              return;
+            }
             semesters.splice(sIdx, 1);
             delete collapsedSemesters[sIdx];
             if (!semesters.length) {
@@ -3400,6 +3419,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
             saveData();
             renderCourses();
             renderSemesters();
+            showToast(`Deleted ${semName}`, 'info');
           });
         });
 
@@ -3857,6 +3877,67 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
       // Modal Events & Tab Switching
       const modal = $('#sync-modal');
       
+      function isSemesterBlank(sem) {
+        if (!sem) return true;
+        if (!sem.courses || sem.courses.length === 0) return true;
+        return sem.courses.every(c => !c.name || c.name.trim() === '');
+      }
+
+      function getFirstBlankSemesterIndex() {
+        normalizeSemesterState();
+        for (let i = 0; i < semesters.length; i++) {
+          if (isSemesterBlank(semesters[i])) return i;
+        }
+        return -1;
+      }
+
+      function updateImportTargetSemesterOptions() {
+        const sel = $('#import-target-semester-select');
+        if (!sel) return;
+
+        normalizeSemesterState();
+        const firstBlankIdx = getFirstBlankSemesterIndex();
+
+        // Default selection:
+        // 1. If currently active semester (currentSemIdx) is blank, select it!
+        // 2. Otherwise if any other semester is blank (e.g. 2nd Semester), select that!
+        // 3. Otherwise if all semesters have data, select 'new' (+ Add as New Semester)!
+        let defaultVal = '0';
+        if (Number.isInteger(currentSemIdx) && isSemesterBlank(semesters[currentSemIdx])) {
+          defaultVal = String(currentSemIdx);
+        } else if (firstBlankIdx !== -1) {
+          defaultVal = String(firstBlankIdx);
+        } else {
+          defaultVal = 'new';
+        }
+
+        let html = semesters.map((s, idx) => {
+          const isBlank = isSemesterBlank(s);
+          const validCoursesCount = (s.courses || []).filter(c => c.name && c.name.trim()).length;
+          const statusText = isBlank ? '(Blank / Empty)' : `(${validCoursesCount} Courses — ${s.credit || '0'} Cr)`;
+          const isSelected = String(idx) === defaultVal ? 'selected' : '';
+          return `<option value="${idx}" ${isSelected}>${esc(s.name)} ${statusText}</option>`;
+        }).join('');
+
+        const nextNum = nextAvailableSemesterNumber();
+        const nextTitle = semesterTitle(nextNum);
+        const isNewSelected = defaultVal === 'new' ? 'selected' : '';
+        html += `<option value="new" ${isNewSelected}>+ Add New (${nextTitle})</option>`;
+
+        sel.innerHTML = html;
+
+        const badge = $('#import-target-badge');
+        if (badge) {
+          if (defaultVal === 'new') {
+            badge.textContent = `New (${nextTitle})`;
+          } else if (firstBlankIdx !== -1) {
+            badge.textContent = `${semesters[+defaultVal]?.name || 'Auto'} (Blank)`;
+          } else {
+            badge.textContent = `${semesters[+defaultVal]?.name || 'Auto'}`;
+          }
+        }
+      }
+
       function renderPortalSessionUI() {
         const sessionBox = $('#portal-active-session-box');
         const mainSessionBadge = $('#main-active-session-badge');
@@ -3868,6 +3949,7 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
 
       const openModal = () => {
         renderPortalSessionUI();
+        updateImportTargetSemesterOptions();
         modal.style.display = 'flex';
       };
 
@@ -3936,39 +4018,81 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
           { name: 'COMMUNICATIVE ENGLISH LAB', credit: '1', point: '3.50', grade: 'A-' }
         ];
 
-        collapsedSemesters = {}; // Expand all semesters so results are immediately visible
-
-        // Auto detect shift (Day vs Evening) from Student ID
+        normalizeSemesterState();
         programShift = detectShiftFromStudentId(studentId);
 
         const importedBlocks = customSemesters && customSemesters.length 
           ? customSemesters 
-          : [{ term: '1st Semester', courses: defaultScrapedCourses }];
+          : [{ term: '', courses: defaultScrapedCourses }];
 
-        importedBlocks.forEach((block, idx) => {
+        const targetChoice = $('#import-target-semester-select')?.value ?? 'auto';
+
+        if (importedBlocks.length === 1) {
+          const block = importedBlocks[0];
           const batchCredits = block.courses.reduce((sum, c) => sum + (Number(c.credit) || 0), 0);
           const batchPoints = block.courses.reduce((sum, c) => sum + ((Number(c.credit) || 0) * (Number(c.point) || 0)), 0);
           const batchGpa = batchCredits ? (batchPoints / batchCredits).toFixed(2) : '0.00';
 
-          const targetSemName = block.term || (idx === 0 ? '1st Semester' : `${idx + 1}th Semester`);
-
-          // Overwrite matching semester if it exists (by name or slot), avoiding duplicate entries!
-          const existingIdx = semesters.findIndex(s => s.name.toLowerCase() === targetSemName.toLowerCase() || (idx === 0 && s.name.toLowerCase() === '1st semester'));
-
-          if (existingIdx !== -1) {
-            semesters[existingIdx].name = targetSemName;
-            semesters[existingIdx].courses = block.courses;
-            semesters[existingIdx].credit = batchCredits.toString();
-            semesters[existingIdx].cgpa = batchGpa;
-          } else if (semesters.length > idx) {
-            semesters[idx].name = targetSemName;
-            semesters[idx].courses = block.courses;
-            semesters[idx].credit = batchCredits.toString();
-            semesters[idx].cgpa = batchGpa;
+          let targetIdx;
+          if (targetChoice === 'new') {
+            const nextSemNum = nextAvailableSemesterNumber();
+            const semTitle = semesterTitle(nextSemNum);
+            semesters.push({ name: semTitle, credit: batchCredits.toString(), cgpa: batchGpa, courses: block.courses });
+            targetIdx = semesters.length - 1;
+          } else if (targetChoice !== 'auto' && Number.isInteger(+targetChoice) && semesters[+targetChoice]) {
+            targetIdx = +targetChoice;
+            semesters[targetIdx].courses = block.courses;
+            semesters[targetIdx].credit = batchCredits.toString();
+            semesters[targetIdx].cgpa = batchGpa;
           } else {
-            semesters.push({ name: targetSemName, credit: batchCredits.toString(), cgpa: batchGpa, courses: block.courses });
+            const blankIdx = getFirstBlankSemesterIndex();
+            if (blankIdx !== -1) {
+              targetIdx = blankIdx;
+              semesters[targetIdx].courses = block.courses;
+              semesters[targetIdx].credit = batchCredits.toString();
+              semesters[targetIdx].cgpa = batchGpa;
+            } else {
+              const nextSemNum = nextAvailableSemesterNumber();
+              const semTitle = semesterTitle(nextSemNum);
+              semesters.push({ name: semTitle, credit: batchCredits.toString(), cgpa: batchGpa, courses: block.courses });
+              targetIdx = semesters.length - 1;
+            }
           }
-        });
+
+          currentSemIdx = targetIdx;
+          collapsedSemesters = {};
+          semesters.forEach((_, i) => { collapsedSemesters[i] = (i !== targetIdx); });
+        } else {
+          // Multiple semester blocks detected
+          let startIdx = 0;
+          if (targetChoice !== 'auto' && targetChoice !== 'new' && Number.isInteger(+targetChoice)) {
+            startIdx = +targetChoice;
+          } else {
+            const blankIdx = getFirstBlankSemesterIndex();
+            startIdx = blankIdx !== -1 ? blankIdx : semesters.length;
+          }
+
+          importedBlocks.forEach((block, idx) => {
+            const batchCredits = block.courses.reduce((sum, c) => sum + (Number(c.credit) || 0), 0);
+            const batchPoints = block.courses.reduce((sum, c) => sum + ((Number(c.credit) || 0) * (Number(c.point) || 0)), 0);
+            const batchGpa = batchCredits ? (batchPoints / batchCredits).toFixed(2) : '0.00';
+
+            const destIdx = startIdx + idx;
+            const semTitle = block.term || (destIdx === 0 ? '1st Semester' : `${destIdx + 1}th Semester`);
+
+            if (semesters[destIdx]) {
+              semesters[destIdx].name = semTitle;
+              semesters[destIdx].courses = block.courses;
+              semesters[destIdx].credit = batchCredits.toString();
+              semesters[destIdx].cgpa = batchGpa;
+            } else {
+              semesters.push({ name: semTitle, credit: batchCredits.toString(), cgpa: batchGpa, courses: block.courses });
+            }
+          });
+          currentSemIdx = startIdx;
+          collapsedSemesters = {};
+          semesters.forEach((_, i) => { collapsedSemesters[i] = (i !== startIdx); });
+        }
 
         saveData();
         switchMode('semester');
@@ -3981,7 +4105,8 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
         if (box) box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
         const shiftText = programShift === 'evening' ? 'Evening Program (10 Semesters)' : 'Day Program (12 Semesters)';
-        showToast(`Synced & updated result data for Student ID: ${studentId}! (${shiftText})`, 'success');
+        const targetSemName = semesters[currentSemIdx]?.name || 'Semester';
+        showToast(`Synced & imported result data into ${targetSemName}! (${shiftText})`, 'success');
       }
 
       // Portal Login Handler
@@ -4173,26 +4298,78 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
         const detected = parseMultiSemesterText(text);
 
         if (detected.length) {
-          collapsedSemesters = {}; // Expand all newly imported semester sections
+          normalizeSemesterState();
+          const targetChoice = $('#import-target-semester-select')?.value ?? 'auto';
 
-          detected.forEach((block, idx) => {
+          if (detected.length === 1) {
+            const block = detected[0];
             const batchCredits = block.courses.reduce((sum, c) => sum + (Number(c.credit) || 0), 0);
             const batchPoints = block.courses.reduce((sum, c) => sum + ((Number(c.credit) || 0) * (Number(c.point) || 0)), 0);
             const batchGpa = batchCredits ? (batchPoints / batchCredits).toFixed(2) : '0.00';
 
-            const semIndex = idx + 1;
-            const ordinal = (semIndex === 1) ? '1st' : (semIndex === 2) ? '2nd' : (semIndex === 3) ? '3rd' : `${semIndex}th`;
-            const semTitle = `${ordinal} Semester`;
-
-            if (semesters[idx]) {
-              semesters[idx].name = semTitle;
-              semesters[idx].credit = batchCredits.toString();
-              semesters[idx].cgpa = batchGpa;
-              semesters[idx].courses = block.courses;
-            } else {
+            let targetIdx;
+            if (targetChoice === 'new') {
+              const nextSemNum = nextAvailableSemesterNumber();
+              const semTitle = semesterTitle(nextSemNum);
               semesters.push({ name: semTitle, credit: batchCredits.toString(), cgpa: batchGpa, courses: block.courses });
+              targetIdx = semesters.length - 1;
+            } else if (targetChoice !== 'auto' && Number.isInteger(+targetChoice) && semesters[+targetChoice]) {
+              targetIdx = +targetChoice;
+              semesters[targetIdx].courses = block.courses;
+              semesters[targetIdx].credit = batchCredits.toString();
+              semesters[targetIdx].cgpa = batchGpa;
+            } else {
+              // Auto fallback to first blank semester
+              const blankIdx = getFirstBlankSemesterIndex();
+              if (blankIdx !== -1) {
+                targetIdx = blankIdx;
+                semesters[targetIdx].courses = block.courses;
+                semesters[targetIdx].credit = batchCredits.toString();
+                semesters[targetIdx].cgpa = batchGpa;
+              } else {
+                const nextSemNum = nextAvailableSemesterNumber();
+                const semTitle = semesterTitle(nextSemNum);
+                semesters.push({ name: semTitle, credit: batchCredits.toString(), cgpa: batchGpa, courses: block.courses });
+                targetIdx = semesters.length - 1;
+              }
             }
-          });
+
+            currentSemIdx = targetIdx;
+            collapsedSemesters = {};
+            semesters.forEach((_, i) => { collapsedSemesters[i] = (i !== targetIdx); });
+          } else {
+            // Multiple semesters detected
+            let startIdx = 0;
+            if (targetChoice !== 'auto' && targetChoice !== 'new' && Number.isInteger(+targetChoice)) {
+              startIdx = +targetChoice;
+            } else {
+              const blankIdx = getFirstBlankSemesterIndex();
+              startIdx = blankIdx !== -1 ? blankIdx : semesters.length;
+            }
+
+            detected.forEach((block, idx) => {
+              const batchCredits = block.courses.reduce((sum, c) => sum + (Number(c.credit) || 0), 0);
+              const batchPoints = block.courses.reduce((sum, c) => sum + ((Number(c.credit) || 0) * (Number(c.point) || 0)), 0);
+              const batchGpa = batchCredits ? (batchPoints / batchCredits).toFixed(2) : '0.00';
+
+              const destIdx = startIdx + idx;
+              const semIndex = destIdx + 1;
+              const ordinal = (semIndex === 1) ? '1st' : (semIndex === 2) ? '2nd' : (semIndex === 3) ? '3rd' : `${semIndex}th`;
+              const semTitle = block.term || `${ordinal} Semester`;
+
+              if (semesters[destIdx]) {
+                semesters[destIdx].name = semTitle;
+                semesters[destIdx].credit = batchCredits.toString();
+                semesters[destIdx].cgpa = batchGpa;
+                semesters[destIdx].courses = block.courses;
+              } else {
+                semesters.push({ name: semTitle, credit: batchCredits.toString(), cgpa: batchGpa, courses: block.courses });
+              }
+            });
+            currentSemIdx = startIdx;
+            collapsedSemesters = {};
+            semesters.forEach((_, i) => { collapsedSemesters[i] = (i !== startIdx); });
+          }
 
           saveData();
           switchMode('semester');
@@ -4205,9 +4382,10 @@ CSE0613102	STRUCTURED PROGRAMMING LANGUAGE LAB	1.00	Regular	E	3.50	A-"></textare
           const box = $('#course-list');
           if (box) box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-          alert(`Successfully auto-detected and imported ${detected.length} semester(s)!`);
+          const targetSemName = semesters[currentSemIdx]?.name || 'Semester';
+          showToast(`Successfully imported courses into ${targetSemName}!`, 'success');
         } else {
-          alert('Could not detect valid course data. Please verify the copied text.');
+          alert('Could not parse any courses from the pasted text. Please verify the copied text.');
         }
       });
 
