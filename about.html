@@ -50,7 +50,9 @@
   </script>
 
   <!-- Typography & Styling -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     :root {
       --primary: #2451C4;
@@ -104,7 +106,7 @@
       line-height: 1.15;
     }
     .dash-header .brand-text .title {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: var(--font-display, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
       font-weight: 700;
       font-size: 15px;
       letter-spacing: -0.2px;
@@ -304,7 +306,7 @@
       border: 1px solid rgba(255,255,255,0.3);
     }
     h1.hero-title {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: var(--font-display, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
       font-size: 26px;
       line-height: 1.25;
       font-weight: 700;
@@ -325,7 +327,7 @@
       box-shadow: 0 10px 30px rgba(20, 40, 90, 0.05);
     }
     h2 {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: var(--font-display, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
       font-size: 20px;
       color: var(--text-dark);
       margin-bottom: 14px;

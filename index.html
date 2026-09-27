@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>UU CGPA Calculator — Uttara University Student Tools</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <script src="student-auth.js"></script>
   <style>
     /* Student Auth & Modal Styles */
@@ -257,6 +259,8 @@
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
     :root {
+      --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --primary: #2F4EA2;
       --primary-dark: #1e3575;
       --primary-light: #eef3ff;
@@ -280,7 +284,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: var(--font-body, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
       background-color: var(--bg);
       color: var(--text-dark);
       min-height: 100vh;
@@ -335,7 +339,7 @@
       line-height: 1.15;
     }
     .dash-header .brand-text .title {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: var(--font-display, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
       font-weight: 700;
       font-size: 15px;
       letter-spacing: -0.2px;
@@ -707,49 +711,7 @@
       width: 100% !important;
     }
 
-    /* Main Container */
-    @media (max-width: 900px) {
-      .bottom-nav {
-        display: flex !important;
-        position: fixed !important;
-        left: 0 !important;
-        right: 0 !important;
-        bottom: 0 !important;
-        height: 64px !important;
-        background: #FFFFFF !important;
-        border-top: 1px solid #E2E8F0 !important;
-        box-shadow: 0 -4px 20px rgba(14, 27, 51, 0.08) !important;
-        align-items: center !important;
-        justify-content: space-around !important;
-        padding: 4px 8px !important;
-        z-index: 999999 !important;
-      }
-      .bottom-nav .bnav-item {
-        flex: 1 !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-        gap: 3px !important;
-        height: 100% !important;
-        color: #64748B !important;
-        font-size: 11px !important;
-        font-weight: 600 !important;
-        text-decoration: none !important;
-      }
-      .bottom-nav .bnav-item.active {
-        color: #2451C4 !important;
-        font-weight: 700 !important;
-      }
-      .bottom-nav .bnav-item svg {
-        width: 22px !important;
-        height: 22px !important;
-        stroke: currentColor !important;
-      }
-      body {
-        padding-bottom: 76px !important;
-      }
-    }
+    /* Main Container & Layout */
 
     .main-wrapper {
       max-width: 1200px;
@@ -1372,8 +1334,8 @@
       color: var(--primary-dark);
     }
 
-    /* Responsive Styles */
-    @media (max-width: 900px) {
+    /* Responsive Styles - Tablets & Large Handhelds (<= 768px) */
+    @media (max-width: 768px) {
       .main-wrapper {
         padding: 0 12px !important;
         margin: 12px auto 32px !important;
@@ -2008,6 +1970,71 @@
       }
     }
 
+    /* All Standard Mobile Devices (iPhone, Samsung, Pixel, Xiaomi: 361px - 480px) */
+    @media (max-width: 480px) {
+      .main-wrapper {
+        padding: 0 10px !important;
+        margin: 8px auto 28px !important;
+        max-width: 100% !important;
+      }
+      .hero-banner {
+        padding: 16px 14px !important;
+        border-radius: 14px !important;
+      }
+      .hero-banner h1 {
+        font-size: 19px !important;
+      }
+      .calc-card, .card-panel {
+        padding: 14px 10px !important;
+        border-radius: 14px !important;
+      }
+      .stats-dashboard {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 6px !important;
+      }
+      .stats-dashboard .stat-card {
+        padding: 10px 8px !important;
+        border-radius: 10px !important;
+      }
+      .stats-dashboard .stat-card label {
+        font-size: 9.5px !important;
+      }
+      .stats-dashboard .stat-card .value {
+        font-size: 20px !important;
+      }
+      .mode-switch-group {
+        gap: 5px !important;
+      }
+      .mode-card-btn {
+        padding: 8px 4px !important;
+      }
+      .mode-icon-box {
+        width: 26px !important;
+        height: 26px !important;
+      }
+      .mode-info strong {
+        font-size: 9.5px !important;
+      }
+      .semester-section-block {
+        padding: 12px 10px !important;
+        border-radius: 12px !important;
+      }
+      .sem-header-btns-row .add-course-sem-btn,
+      .sem-header-btns-row .save-to-overall-btn {
+        height: 34px !important;
+        font-size: 11px !important;
+      }
+      .action-btn-group button {
+        height: 36px !important;
+        font-size: 12px !important;
+        padding: 0 10px !important;
+      }
+      .status-pill, .sem-gpa-badge, .sem-title-badge, .live-badge {
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+      }
+    }
+
     /* Ultra-Compact Mobile Devices (<= 360px) */
     @media (max-width: 360px) {
       .semester-section-block {
@@ -2420,7 +2447,7 @@
     html, body {
       overflow-x: clip !important;
     }
-    @media screen and (max-width: 900px) {
+    @media (max-width: 768px) {
       .dash-header.navbar .header-actions {
         display: none !important;
         border-left: 0 !important;

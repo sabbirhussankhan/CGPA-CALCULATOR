@@ -54,7 +54,7 @@ The calculator conforms strictly to the standard academic 4.00 grading system:
 ## 🛠️ Tech Stack
 
 - **Frontend Core**: Vanilla HTML5, CSS3, JavaScript (ES6+)
-- **Typography**: Google Fonts (*Inter*, *Space Grotesk*)
+- **Typography**: Google Fonts (*Inter*)
 - **Icons**: Custom SVG Vector Micro-Icons
 - **Deployment**: GitHub Pages, Netlify
 
